@@ -25,7 +25,7 @@ public static class ScriptDocGeneratorAPI
 
 与面板共用同一套分析与写入核心（ScriptDocGeneratorUtility）， 但全程无确认弹窗、不自动打开生成结果。覆盖语义与面板"多程序集模式"一致： 已存在的文档按增量规则合并（保留 Front Matter 与 ## Additional Notes 之后的手写内容），未存在则新建。
 
-调用示例（AI / 自动化）： - 为程序集生成 Zensical 文档：ScriptDocGeneratorAPI.GenerateDocsForAssembly("Runestone.AesirModules", ScriptDocGeneratorAPI.ZensicalSettings) - 为文件夹内全部脚本生成默认文档：ScriptDocGeneratorAPI.GenerateDocsForFolder("Assets/Runestone/AesirModules/Runtime/Scene") - 为单个类型生成文档：ScriptDocGeneratorAPI.GenerateDocsForType(typeof(SomeClass))
+调用示例（AI / 自动化）： - 为程序集生成 Zensical 文档： ScriptDocGeneratorAPI.GenerateDocsForAssembly("Runestone.AesirModules", ScriptDocGeneratorAPI.ZensicalSettings) - 为文件夹内全部脚本生成默认文档： ScriptDocGeneratorAPI.GenerateDocsForFolder("Assets/Runestone/AesirModules/Runtime/Scene") - 为单个类型生成文档：ScriptDocGeneratorAPI.GenerateDocsForType(typeof(SomeClass))
 
 settings 传 null 使用 DefaultSettings；outputFolder 传 null 使用 DefaultOutputFolder（项目根 ScriptDocGenerator/，Assets 外不产生 .meta）。 自定义生成器：继承 DocGeneratorSettingsSO 创建设置资产后传入， 或经 FindAllSettings 枚举项目内已有设置资产。
 

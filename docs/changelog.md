@@ -11,11 +11,47 @@
 
 | 子包 | 包名 | 版本 |
 |------|------|------|
-| Aesir Architecture | `cn.runestone.aesir.architecture` | **0.31.2** |
-| Aesir Modules | `cn.runestone.aesir.modules` | **0.31.2** |
+| Aesir Architecture | `cn.runestone.aesir.architecture` | **0.32.0** |
+| Aesir Modules | `cn.runestone.aesir.modules` | **0.32.0** |
 
 !!! tip "版本策略"
     两包同号发版(CI 校验一致),推荐同版本安装。Aesir Modules 依赖 Aesir Architecture;Aesir Architecture 不依赖任何 Aesir 子包。
+
+## [0.32.0] - 2026-10-17
+
+**Aesir Architecture(文档) + Aesir Modules(功能修复)**:RAA 包内 AI 文档整合为 AesirFramework-Skill 并新增 AesirBootScene-Skill;RAM 落地 Scene / UI / Wrapper 全量核查修复批次。
+
+### Aesir Architecture
+
+**Added**
+
+- **AI Skill 文档集整合(AesirFramework-Skill)**:新建全框架 AI 编码指南(`Documentation/AesirFramework-Skill/`),整合收编项目全部 AI 相关文档——原 AesirArchitecture-Skill 六档模板(MVC/MVP × Quick/Standard/Strict)与 core-api 速查、常见陷阱清单(10 条)、事件机制决策表、Jam 实战手册(原私有规范文档首次随包分发)与新增 RAM 四模块 API 速查(UI/Scene/Event/Audio)。**档位口径按最新裁决修订:默认按最低档(Quick)执行**——具体类注册、可写 `ObservableValue` 直接暴露、不建 Model/Service 接口、不做只读 property 包装、不用 Command/Query;升档为加法
+- **AI 启动场景 Skill(AesirBootScene-Skill)**:一键创建启动场景(主菜单场景)+ 启动脚本——空场景 + 唯一 `GameBootstrap` 物体(挂启动脚本 + AudioListener,无 Main Camera),登记 Build Settings index 0
+
+**Removed**
+
+- **AesirArchitecture-Skill / 常见陷阱清单.md / 事件机制决策表.md(独立文档收编)**:内容已全部收编进 AesirFramework-Skill 的 SKILL.md 与 references/;独立副本删除,README 文档地图同步改指新 skill
+- **产品文档精简**:`Documentation/` 收敛为纯产品文档三类(英文 README / 使用文档 / AI Skill);内部审查报告与演进记录迁至开发者私有文档仓,不再随 unitypackage 分发
+
+### Aesir Modules
+
+**Added**
+
+- **无 Odin 环境的 Scene/配置 Inspector 兜底**:新增 `SceneAssetWrapperDrawer`(原生 PropertyDrawer)与 `SceneModuleConfigSOEditor`(原生 CustomEditor),均 `#if !ODIN_INSPECTOR` 包裹(Odin 在场时整体剔除、面板效果仍由 Odin Processor 提供)——未装 Odin 时 `SceneAssetWrapper` 可拖拽赋值、看状态行并使用"添加到 BuildSettings / 启用"一键修复;`SceneModuleConfigSO` 的启动场景与进度上限可在 Project 窗口直接编辑
+- **`Show<T>(string path)` / `Open<T>(string path)` 重载**:位置参数直接传资源路径,消除字符串被 `object payload` 形参吞掉、随后报"未注册预制体且未提供 path"且不揭示真实原因的陷阱
+- **外部场景卸载自动对账**:SceneModule 订阅 `SceneManager.sceneUnloaded`,经原生 API 卸载掉叠加追踪中的场景时自动移出记账并告警;宿主失活/销毁时配平批量卸载的重入深度
+
+**Changed**
+
+- **查询类静态 API 不再创建模块实例(行为变更)**:`UIModule.Get<T>()` / `ContainPrefab<T>()` / `GetWindow<T>()` / `ContainWindowPrefab<T>()` 改经 `TryGetExisting` 非创建式取值——无实例时返回 `null` / `false`,不再凭空创建 `[Aesir Modules]` 宿主树
+- **Single 加载并发互斥(行为变更)**:进行中的 Single 期间收到新 Single 请求,同路径幂等忽略(告警、不触发回调)、异路径拒绝并触发 `onFailed`
+- **裸场景名与完整路径双支持**:`LoadSceneSingle` / `LoadSceneAdditive` 记账按路径查找失败后按名回退;推荐完整资产路径(BuildSettings 粒度即路径、无重名歧义)
+- **面板克隆子树递归归入 UI 层**:对齐窗口侧 `SetLayerRecursively`——GameObject.layer 不随父级继承,预制体内非 UGUI 渲染器(如 SpriteRenderer)不再因 layer 0 被 UICamera 的 cullingMask 挡掉
+- **引用注册后带 path 调用给出诊断**:经 `RegisterPrefab` / `RegisterWindowPrefab` 注册的条目再带 `path` 调用 Show/Open 时输出"path 被忽略"警告;加载器初始化收敛为惰性;加载失败文案按契约分派(不再一律写"面板")
+
+**Fixed**
+
+- **失活预放置的 SceneModule 实例不再被采纳**:预放置模块所在 GameObject 失活时跳过(失活物体无法启动协程,采纳会让首次加载直接抛 UnityException),改为运行时新建并告警;UI 示例场景(SampleForUIBasic)主相机 cullingMask 排除 UI 层与 TransparentFX(此前 Everything 与自家"主相机须排除 UI 层"规则相悖,照抄示例即 UI 双渲染)
 
 ## [0.31.2] - 2026-10-06
 

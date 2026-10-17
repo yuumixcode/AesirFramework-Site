@@ -44,7 +44,7 @@ Modules 依赖 Architecture(必需)。UPM 对 Git URL 安装的包不会自动�
 
 ## 高频陷阱与修法
 
-> 完整 10 条陷阱清单见包内 `Documentation/常见陷阱清单.md`。异常消息已含修复指引(fail-fast)。
+> 完整 10 条陷阱清单见包内 AI 编码指南 `Documentation/AesirFramework-Skill/references/pitfalls.md`(已随 AesirFramework-Skill 整合)。异常消息已含修复指引(fail-fast)。
 
 ### `GetModel<T>()` 抛"未注册"异常
 

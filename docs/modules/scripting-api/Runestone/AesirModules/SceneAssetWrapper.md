@@ -60,7 +60,7 @@ public SceneAssetWrapper()
 | [`CanMakeAddressable`](#property-canmakeaddressable) | 是否显示"加入 Addressables"修复按钮（需要安装 Addressables 包且场景当前不可寻址）。 |
 | [`DisabledInBuildSettings`](#property-disabledinbuildsettings) | 场景在 BuildSettings 中存在条目但被禁用（编辑器实时检测）。 |
 | [`IsAddressable`](#property-isaddressable) | 此场景是否为 Addressable 场景。 编辑器下（桥已注册）实时核验并回写缓存；运行时按序列化数据判定。 |
-| [`IsDangling`](#property-isdangling) | 场景引用已悬空：SceneAsset 对象引用丢失但路径缓存仍在（场景被移动/删除或引用断链）。 Inspector 中以红色提示，可通过重新拖拽场景或右键菜单 Reset Scene 修复。 |
+| [`IsDangling`](#property-isdangling) | 场景引用已悬空：SceneAsset 对象引用丢失，且经 GUID 自愈回写的路径也定位不到场景资产 （资产被删除或移出工程）。Inspector 中以红色提示，可通过重新拖拽场景修复。 对象引用断链但资产仍可经路径定位（场景被移动后的 GUID 自愈成功）时不算悬空—— 加载完全可用，只是面板上建议重新拖拽一次以恢复对象引用。 |
 | [`MissingFromBuild`](#property-missingfrombuild) | 场景完全不在 BuildSettings 中（既没有启用条目，也没有禁用条目）。 |
 | [`NotInBuildSettings`](#property-notinbuildsettings) | 场景不在 BuildSettings 中时返回 true（含"已加入但被禁用"）；空引用返回 false。 |
 | [`BuildIndex`](#property-buildindex) | 场景在 BuildSettings 中的序号。未加入（或被禁用）时返回 -1，不抛异常。 |
@@ -146,7 +146,8 @@ public bool IsAddressable { get; }
 
 ### IsDangling {#property-isdangling}
 
-场景引用已悬空：SceneAsset 对象引用丢失但路径缓存仍在（场景被移动/删除或引用断链）。 Inspector 中以红色提示，可通过重新拖拽场景或右键菜单 Reset Scene 修复。
+场景引用已悬空：SceneAsset 对象引用丢失，且经 GUID 自愈回写的路径也定位不到场景资产 （资产被删除或移出工程）。Inspector 中以红色提示，可通过重新拖拽场景修复。
+对象引用断链但资产仍可经路径定位（场景被移动后的 GUID 自愈成功）时不算悬空—— 加载完全可用，只是面板上建议重新拖拽一次以恢复对象引用。
 
 ``` csharp
 public bool IsDangling { get; }

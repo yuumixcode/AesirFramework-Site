@@ -150,12 +150,14 @@ public static UIModule Instance { get; }
 | [`RegisterPanelPrefab(Type, GameObject)`](#method-registerpanelprefab-type-gameobject) | 注册面板类型对应的预制体。 |
 | [`RegisterPanelPrefab(GameObject)`](#method-registerpanelprefab-gameobject) | 注册面板类型对应的预制体（泛型版本）。 |
 | [`RegisterWindowPrefab(Type, GameObject)`](#method-registerwindowprefab-type-gameobject) | 注册窗口类型对应的预制体（与面板共用同一份预制体注册表，类型系统天然分桶）。 |
-| [`Get()`](#method-get) | — |
+| [`Get()`](#method-get) | 静态快捷：获取已注册的面板实例。 |
 | [`GetWindow()`](#method-getwindow) | 静态快捷：获取已注册的窗口实例。 |
 | [`Open(object, string)`](#method-open-object-string) | 静态快捷：打开窗口。 |
+| [`Open(string)`](#method-open-string) | 静态快捷：打开窗口（资源路径版本）。Open<T>("UI/Xxx") 的字符串经本重载进入 path 形参——消除位置参数版中路径被 object payload 吞掉的陷阱（同 Show{T}(string)）。 |
 | [`Show(object, string)`](#method-show-object-string) | 静态快捷：打开面板。 |
+| [`Show(string)`](#method-show-string) | 静态快捷：打开面板（资源路径版本）。Show<T>("UI/Xxx") 的字符串经本重载进入 path 形参——消除位置参数版中路径被 object payload 吞掉、 随后报"未注册预制体且未提供 path"且不揭示真实原因的陷阱。 |
 | [`Show(TPayload, string)`](#method-show-tpayload-string) | 静态快捷：打开面板（强类型 payload 版本，同 ShowPanel{TPanel, TPayload}(TPayload, string)）。 |
-| [`ContainPrefab()`](#method-containprefab) | — |
+| [`ContainPrefab()`](#method-containprefab) | 静态快捷：面板类型对应的预制体是否已注册。 |
 | [`ContainWindowPrefab()`](#method-containwindowprefab) | 静态快捷：窗口类型对应的预制体是否已注册。 |
 | [`Prewarm(string)`](#method-prewarm-string) | 静态快捷：预热面板。 |
 | [`PrewarmWindow(string)`](#method-prewarmwindow-string) | 静态快捷：预热窗口。 |
@@ -279,6 +281,10 @@ public IUIPanel ShowPanel(Type panelType, object payload = null, string path = n
 ### GetWindow(Type) {#method-getwindow-type}
 
 获取已注册的窗口实例。键为窗口实例的实际类型；精确未命中时静默返回 null， 仅当注册表存在派生实例（疑似以基类类型误查）时记录键语义警告。
+
+**备注**
+
+纯查询不创建模块实例（理由同 Get{T}）。
 
 ``` csharp
 public IUIWindow GetWindow(Type windowType)
@@ -721,6 +727,12 @@ public void RegisterWindowPrefab(Type windowType, GameObject prefab)
 
 ### Get() {#method-get}
 
+静态快捷：获取已注册的面板实例。
+
+**备注**
+
+纯查询不创建模块实例：无实例（如场景卸载、启动即查询、编辑器期探测）时返回 null， 不再凭空造出 [Aesir Modules] 宿主树。
+
 ``` csharp
 public static T Get<T>()
 ```
@@ -738,6 +750,10 @@ public static T Get<T>()
 ### GetWindow() {#method-getwindow}
 
 静态快捷：获取已注册的窗口实例。
+
+**备注**
+
+纯查询不创建模块实例（理由同 Get{T}）。
 
 ``` csharp
 public static T GetWindow<T>()
@@ -782,6 +798,34 @@ public static T Open<T>(object payload = null, string path = null)
 
 </div>
 
+### Open(string) {#method-open-string}
+
+静态快捷：打开窗口（资源路径版本）。Open<T>("UI/Xxx") 的字符串经本重载进入 path 形参——消除位置参数版中路径被 object payload 吞掉的陷阱（同 Show{T}(string)）。
+
+``` csharp
+public static T Open<T>(string path)
+```
+
+**参数**
+
+<div class="api-params-table" markdown="1">
+
+| 名称 | 类型 | 说明 |
+| :--- | :--- | :--- |
+| `path` | `string` | 资源路径，用于加载预制体。使用 UIAssetLoader 加载。 |
+
+</div>
+
+**返回值**
+
+<div class="api-returns-table" markdown="1">
+
+| 类型 | 说明 |
+| :--- | :--- |
+| `T` | 窗口实例，失败返回 null。 |
+
+</div>
+
 ### Show(object, string) {#method-show-object-string}
 
 静态快捷：打开面板。
@@ -797,6 +841,34 @@ public static T Show<T>(object payload = null, string path = null)
 | 名称 | 类型 | 说明 |
 | :--- | :--- | :--- |
 | `payload` | `object` | 传递给 OnShow 的数据。 |
+| `path` | `string` | 资源路径，用于加载预制体。使用 UIAssetLoader 加载。 |
+
+</div>
+
+**返回值**
+
+<div class="api-returns-table" markdown="1">
+
+| 类型 | 说明 |
+| :--- | :--- |
+| `T` | 面板实例。 |
+
+</div>
+
+### Show(string) {#method-show-string}
+
+静态快捷：打开面板（资源路径版本）。Show<T>("UI/Xxx") 的字符串经本重载进入 path 形参——消除位置参数版中路径被 object payload 吞掉、 随后报"未注册预制体且未提供 path"且不揭示真实原因的陷阱。
+
+``` csharp
+public static T Show<T>(string path)
+```
+
+**参数**
+
+<div class="api-params-table" markdown="1">
+
+| 名称 | 类型 | 说明 |
+| :--- | :--- | :--- |
 | `path` | `string` | 资源路径，用于加载预制体。使用 UIAssetLoader 加载。 |
 
 </div>
@@ -842,6 +914,12 @@ public static TPanel Show<TPanel, TPayload>(TPayload payload, string path = null
 
 ### ContainPrefab() {#method-containprefab}
 
+静态快捷：面板类型对应的预制体是否已注册。
+
+**备注**
+
+纯查询不创建模块实例（理由同 Get{T}）。
+
 ``` csharp
 public static bool ContainPrefab<T>()
 ```
@@ -859,6 +937,10 @@ public static bool ContainPrefab<T>()
 ### ContainWindowPrefab() {#method-containwindowprefab}
 
 静态快捷：窗口类型对应的预制体是否已注册。
+
+**备注**
+
+纯查询不创建模块实例（理由同 Get{T}）。
 
 ``` csharp
 public static bool ContainWindowPrefab<T>()

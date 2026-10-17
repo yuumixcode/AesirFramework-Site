@@ -31,7 +31,7 @@ public interface IGenericLocator<T> : System.IDisposable where T : class
 
 注册与查询须使用相同的类型参数。若以具体类型注册（如 Register<Sword>）， 再以接口类型查询（如 Get<IWeapon>），将返回 null。
 
-继承 IDisposable 而非另行声明 Dispose，目的是让"清空容器"成为契约的一部分： AbstractContext{T}.Dispose 只持有 IGenericLocator<T> 抽象， 需要经接口而非具体实现清空。清空仅解除注册关系，不销毁被注册的实例—— 实例的释放由调用方（如 Context 逆序 Dispose 模块）负责。
+继承 IDisposable 而非另行声明 Dispose，目的是让"清空容器"成为契约的一部分： Dispose 只持有 IGenericLocator<T> 抽象， 需要经接口而非具体实现清空。清空仅解除注册关系，不销毁被注册的实例—— 实例的释放由调用方（如 Context 逆序 Dispose 模块）负责。
 
 ## 方法
 

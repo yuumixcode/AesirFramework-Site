@@ -57,7 +57,7 @@ Aesir 包自动更新服务 — 供 AesirUpdateWindow 调用的无状态工具�
 | :--- | :--- |
 | [`GitHubDownloadUrlBase`](#field-githubdownloadurlbase) | GitHub Release 资产下载地址前缀（资产命名约定见 ReleaseSnapshot.GetUnityPackageUrl）。 |
 | [`GitHubRawUpdateInfoUrl`](#field-githubrawupdateinfourl) | 直连 GitHub 的 update-info.json 地址（GitHub 自有域名，无 API 限流、带文件清单； 缓存仅数分钟，远优于 CDN 中转）。 |
-| [`GitHubRawUrlBase`](#field-githubrawurlbase) | GitHub Raw 内容地址前缀（CHANGELOG 拉取的兜底源；大陆可达性不如 jsDelivr，排在最后）。 |
+| [`GitHubRawUrlBase`](#field-githubrawurlbase) | AesirFramework 全部已知包的统一登记（唯一真源）：见 KnownPackages ——目录名、包 id、显示名与描述齐全；本类与 Getting Started 概览卡片共用同一份登记。 目录名同时是 Release 资产命名（<目录名>-v<版本>.unitypackage）与默认安装目录名。 |
 | [`LatestReleaseApiUrl`](#field-latestreleaseapiurl) | GitHub Releases 最新版 API（降级源之二，未认证限流 60 次/时/IP）。 |
 | [`LatestReleasePageUrl`](#field-latestreleasepageurl) | GitHub releases/latest 页面地址（302 到最新 tag，可完全绕开 API 限流）。 |
 | [`ReleasesPageUrl`](#field-releasespageurl) | Releases 网页地址（供用户手动下载 / 查看更新日志）。 |
@@ -181,7 +181,7 @@ public static readonly string GitHubRawUpdateInfoUrl = "https://raw.githubuserco
 
 ### GitHubRawUrlBase {#field-githubrawurlbase}
 
-GitHub Raw 内容地址前缀（CHANGELOG 拉取的兜底源；大陆可达性不如 jsDelivr，排在最后）。
+AesirFramework 全部已知包的统一登记（唯一真源）：见 KnownPackages ——目录名、包 id、显示名与描述齐全；本类与 Getting Started 概览卡片共用同一份登记。 目录名同时是 Release 资产命名（<目录名>-v<版本>.unitypackage）与默认安装目录名。
 
 ``` csharp
 public static readonly string GitHubRawUrlBase = "https://raw.githubusercontent.com/yuumixcode/AesirFramework";
