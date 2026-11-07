@@ -30,4 +30,4 @@
 - [事件模块](events.md) — 双轨订阅 / 过滤器 / SO 资产化
 - [音频模块](audio.md) — SFX 轮询 / BGM 淡入淡出 / 音量持久化
 - [场景模块](scene.md) — SceneModule / SceneAssetWrapper / Addressables
-- [兼容性](compatibility.md) — 可选依赖(Odin / Addressables / Input System)
+- [兼容性](../start/compatibility.md) — 可选依赖(Odin / Addressables / Input System)

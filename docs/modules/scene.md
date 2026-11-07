@@ -96,4 +96,4 @@ Scene last = SceneModule.LastLoadedScene;
 ## 继续阅读
 
 - [快速开始](getting-started.md) —— 安装与 UI 上手
-- [兼容性](compatibility.md) —— Addressables / Odin 可选集成矩阵
+- [兼容性](../start/compatibility.md) —— Addressables / Odin 可选集成矩阵

@@ -1,35 +1,48 @@
 [project]
-site_name = "AesirFramework 文档"
-site_url = "https://yuumixcode.github.io/AesirFramework-Docs/"
-site_description = "AesirFramework 官方文档 —— 渐进式 MVC 架构框架 Aesir Architecture 与功能模块 Aesir Modules(Unity / 团结引擎)"
+site_name = "AesirFramework"
+site_url = "https://yuumixcode.github.io/AesirFramework-Site/"
+site_description = "AesirFramework 官方站点 —— 渐进式 MVC 架构框架 Aesir Architecture 与功能模块 Aesir Modules(Unity / 团结引擎)"
 site_author = "yuumixcode"
 copyright = "© 2026 Runestone Yuumix · MIT License"
-repo_url = "https://github.com/yuumixcode/AesirFramework-Docs"
-repo_name = "yuumixcode/AesirFramework-Docs"
+repo_url = "https://github.com/yuumixcode/AesirFramework-Site"
+repo_name = "yuumixcode/AesirFramework-Site"
 edit_uri = "edit/main/docs/"
 nav = [
   { "首页" = "index.md" },
-  { "Aesir Architecture" = [
-      { "概览" = "architecture/index.md" },
-      { "快速开始" = "architecture/getting-started.md" },
-      { "特性" = "architecture/features.md" },
-      { "内置功能模块" = "architecture/modules.md" },
-      { "架构概念" = "architecture/concepts.md" },
-      { "响应式与事件" = "architecture/observable.md" },
-      { "可观察集合" = "architecture/observable-collections.md" },
-      { "示例总览" = "architecture/samples.md" },
-      { "包内更新器" = "architecture/updater.md" },
-      { "兼容性" = "architecture/compatibility.md" },
+  { "开始" = [
+      { "安装与升级" = "start/installation.md" },
+      { "Architecture 快速开始" = "architecture/getting-started.md" },
+      { "Modules 快速开始" = "modules/getting-started.md" },
+      { "兼容性" = "start/compatibility.md" },
+      { "常见问题 FAQ" = "faq.md" },
   ]},
-  { "Aesir Modules" = [
-      { "概览" = "modules/index.md" },
-      { "快速开始" = "modules/getting-started.md" },
-      { "特性" = "modules/features.md" },
-      { "UI 框架" = "modules/ui.md" },
-      { "事件模块" = "modules/events.md" },
-      { "音频模块" = "modules/audio.md" },
-      { "场景模块" = "modules/scene.md" },
-      { "兼容性" = "modules/compatibility.md" },
+  { "产品" = [
+      { "特性总览" = "product/features.md" },
+      { "示例总览" = "product/samples.md" },
+      { "版本与下载" = "product/releases.md" },
+      { "路线图" = "product/roadmap.md" },
+      { "工具链与生态" = "product/ecosystem.md" },
+  ]},
+  { "文档" = [
+      { "Aesir Architecture" = [
+          { "概览" = "architecture/index.md" },
+          { "快速开始" = "architecture/getting-started.md" },
+          { "特性" = "architecture/features.md" },
+          { "内置功能模块" = "architecture/modules.md" },
+          { "架构概念" = "architecture/concepts.md" },
+          { "响应式与事件" = "architecture/observable.md" },
+          { "可观察集合" = "architecture/observable-collections.md" },
+          { "包内更新器" = "architecture/updater.md" },
+      ]},
+      { "Aesir Modules" = [
+          { "概览" = "modules/index.md" },
+          { "快速开始" = "modules/getting-started.md" },
+          { "特性" = "modules/features.md" },
+          { "UI 框架" = "modules/ui.md" },
+          { "事件模块" = "modules/events.md" },
+          { "音频模块" = "modules/audio.md" },
+          { "场景模块" = "modules/scene.md" },
+      ]},
   ]},
   { "Scripting API" = [
       { "命名空间参考" = "architecture/scripting-api/index.md" },
@@ -338,7 +351,6 @@ nav = [
       ]},
   ]},
   { "更新日志" = "changelog.md" },
-  { "FAQ" = "faq.md" },
   { "支持" = "support.md" },
   { "GitHub" = "https://github.com/yuumixcode/AesirFramework" },
 ]

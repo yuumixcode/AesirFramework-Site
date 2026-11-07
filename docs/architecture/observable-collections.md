@@ -87,5 +87,5 @@ list.AddListener(OnChanged).RemoveListenerWhenGameObjectOnDisable(this);
 ## 继续阅读
 
 - [响应式与事件](observable.md) —— ObservableValue / MiniEvent / 生命周期机制与事件机制决策表
-- [示例总览](samples.md) —— ObservableCollections 示例(ContextMenu 驱动增删改查与集合运算)
+- [示例总览](../product/samples.md) —— ObservableCollections 示例(ContextMenu 驱动增删改查与集合运算)
 - [Scripting API](scripting-api/index.md) —— 集合与接口的类型参考

@@ -230,4 +230,4 @@ PlayerLoop 操作的静态工具类,供框架内外扩展使用,不局限于上�
 - [架构概念](concepts.md) —— Core 层的能力接口组合与 Context 生命周期
 - [特性一览](features.md) —— 按卖点视角速览同一批能力
 - [Scripting API](scripting-api/index.md) —— 全部类型的参考文档
-- [示例总览](samples.md) —— MiniEvent / ObservableCollections 独立示例与 PlaneWar 实战
+- [示例总览](../product/samples.md) —— MiniEvent / ObservableCollections 独立示例与 PlaneWar 实战

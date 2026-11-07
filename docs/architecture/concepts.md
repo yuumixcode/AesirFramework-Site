@@ -121,5 +121,5 @@ Engine 层(Context、角色、Command/Query)零 MonoBehaviour 依赖;表现层�
 ## 继续阅读
 
 - [响应式与事件](observable.md) —— ObservableValue / MiniEvent / 生命周期机制
-- [示例总览](samples.md) —— 从六档计数器示例看这些概念的落地
+- [示例总览](../product/samples.md) —— 从六档计数器示例看这些概念的落地
 - [FAQ](../faq.md) —— 高频陷阱与修法
