@@ -12,7 +12,7 @@ AesirFramework 不是"Unity 全家桶",而是**一套可分层引入的工程骨
 | --- | --- | --- |
 | 定位 | 渐进式 MVC / MVP 架构核心 | 建立在 RAA 之上的功能模块集合 |
 | 依赖 | 无 | RAA |
-| 组成 | Context、Model/Service、Command/Query、View/Controller/Presenter、响应式属性、轻量事件、PlayerLoop 生命周期 | UI 框架、事件模块、音频模块、场景模块、脚本文档生成 |
+| 组成 | Context、Model/Service、Command/Query、View/Controller/Presenter、响应式属性、轻量事件、PlayerLoop 生命周期、计时器 | UI 框架、事件模块、音频模块、场景模块、脚本文档生成 |
 | 渐进档位 | 快捷 → 标准 → 严格(MVC/MVP 各三档) | 模块可单独删除,模块间零依赖 |
 | 典型使用者 | 项目核心逻辑、数据层、表现层分层 | 需要现成 UI 栈 / 场景管理 / 音频门面的项目 |
 
@@ -62,6 +62,14 @@ Model 持有可写实例,View 通过 `IReadOnlyObservableValue<T>` 订阅。`Add
 
 <div class="aesir-value-card" markdown>
 
+**计时器**
+
+`AesirTimer.Countdown(5f, OnReady)` 让纯 C# 层直接延时、做冷却、跑完成度进度条:每个计时器是独立实例,到期自动出队,`Progress` 可直接喂 UI。另有 `AesirTimer.NextFrame(...)` 与不受 `Time.timeScale` 影响的 `unscaled` 选项。
+
+</div>
+
+<div class="aesir-value-card" markdown>
+
 **Domain Reload 安全**
 
 静态状态全部显式重置:非泛型单例类内自重置,泛型类经 `ResetStaticsAssistant` 补位(引擎对泛型类的 RIOLM 会静默跳过)。反复进出 Play Mode 无残留。
@@ -90,7 +98,7 @@ Model 持有可写实例,View 通过 `IReadOnlyObservableValue<T>` 订阅。`Add
 - **事件总线 / EventChannel** —— 跨模块通信用互相 `GetModel` + `ObservableValue` 订阅,或直接引用 `MiniEvent`
 - **Context 多实例** —— CRTP 泛型单例;多存档 / 多房间在业务层建模
 - **Command / Query 的池化、async、Undo/Redo** —— 保持同步、无缓存
-- **时间调度原语** —— 需要延时用 `MonoLifecycleProxy` 的帧回调配计时字段,或把驱动方挂 GameObject 用协程
+- **时间调度的完整形态** —— 只保留 `AesirTimer`(一次性延时 / 冷却进度 / 下一帧);不做正计时秒表、每帧重复回调的 `Repeat`、对象池与暂停单个计时器
 - **View 生命周期脚手架** —— 面板生命周期交由 RAM 的 `UIModule`
 - **线程安全** —— 只保证主线程使用
 - **对象池 / DI 容器 / AudioMixer / 3D 音频** —— 用上游或引擎原生能力

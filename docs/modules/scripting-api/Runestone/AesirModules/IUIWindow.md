@@ -22,7 +22,7 @@ Canvas 根 UI 窗口契约。生命周期：Initialize → Show → Hide → Des
 
 **备注**
 
-窗口与面板是两种并列的 UI 形态（选型对比见包内 Documentation/ui-module.md）； 一个类型不应同时实现 IUIPanel 与本接口。
+窗口与面板是两种并列的 UI 形态（选型对比见包内 Documentation~/ui-module.md）； 一个类型不应同时实现 IUIPanel 与本接口。
 
 ## 属性
 

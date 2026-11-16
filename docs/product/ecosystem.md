@@ -13,16 +13,20 @@ description: "AesirFramework 周边的仓库、AI 技能文档集、工具链与
 | [AesirFramework-Site](https://github.com/yuumixcode/AesirFramework-Site) | 本站(产品介绍 + 使用文档 + Scripting API) | 公开 |
 | `Aesir-Notebook` | 开发过程文档:设计变更、模块锐评、全仓审查、课程规划 | 内部,不公开 |
 
-## 包内 AI 技能文档
+## AI 技能:整包扩展 `AesirFrameworkGame`
 
-两个包都随包分发 AI 编码指南,可直接被 Copilot / Cursor / Claude 等工具读取:
+AI 编码指南不随包分发,统一放在源码仓库根的 `.codely-cli/extensions/AesirFrameworkGame/`——一个扩展同时覆盖两个包,可直接被团结 Cowork / Codely CLI / Copilot / Cursor / Claude 等工具加载:
 
-| 技能 | 位置 | 用途 |
-| --- | --- | --- |
-| **AesirFramework-Skill** | `Documentation/AesirFramework-Skill/` | 全框架 AI 编码指南:六档模板、模块 API 速查、常见陷阱、事件机制决策表、Jam 实战手册 |
-| **AesirBootScene-Skill** | `Documentation/AesirBootScene-Skill/` | 一键创建启动场景 + 启动脚本(空场景 + 唯一 `GameBootstrap` 物体) |
+| 技能 | 回答什么 |
+| --- | --- |
+| `aesir-router` | 入口与分派:依赖门禁、意图 → 技能、组合路径 |
+| `aesir-framework` / `aesir-tiers` / `aesir-core-api` / `aesir-decisions` / `aesir-pitfalls` / `aesir-boot-scene` | 架构底座、六档分级与模板、核心 API、模式与通知机制决策、高频陷阱、启动场景 |
+| `aesir-ui` / `aesir-events` / `aesir-audio` / `aesir-scene` | Aesir Modules 四个功能模块 |
+| 2 篇 templates | 完整小游戏骨架、原生 MonoBehaviour → Aesir 迁移表 |
 
-包内 `Documentation/` 只保留三类**产品文档**:英文 README、使用文档、AI Skill。迭代过程与内部结论写进内部笔记仓,不随 `unitypackage` 分发。
+安装:团结 Cowork 用户稀疏克隆扩展目录后 `codely extensions install`;其他工具取 `skills/` 拆进自己的技能目录。下载与安装说明见包内 `TuanjieCowork~/README.md`。
+
+包内只保留三处**产品文档**:包根 `README.md` / `README_EN.md`、`Documentation~/`(使用文档)、`TuanjieCowork~/README.md`(技能获取入口)。迭代过程与内部结论写进内部笔记仓,不随 `unitypackage` 分发;`.codely-cli/` 与 `~` 结尾目录对 AssetDatabase 不可见,AI 内容不进入任何 Unity 工程。
 
 ## 编辑器工具
 
@@ -50,7 +54,7 @@ description: "AesirFramework 周边的仓库、AI 技能文档集、工具链与
 | [Sirenix Odin Inspector](https://odininspector.com/) | 商业授权(不随包分发) | 可选 Inspector 增强、Binder、脚本文档生成 |
 | [Cysharp/ObservableCollections](https://github.com/Cysharp/ObservableCollections) | MIT | 可观察集合的设计参考与高级能力上游 |
 | [Eflatun.SceneReference](https://github.com/starikcetin/Eflatun.SceneReference) | MIT | `SceneAssetWrapper` 的功能设计参考 |
-| [Vertical 2D Shooting BE4](https://www.goldmetal.co.kr)(Goldmetal) | Copyright ⓒ 2021 Goldmetal,标注出处即可使用(含商用) | PlaneWar 示例的精灵素材,示例内为自包含拷贝 |
+| [Vertical 2D Shooting BE4](https://www.goldmetal.co.kr)(Goldmetal) | Copyright ⓒ 2021 Goldmetal,标注出处即可使用(含商用) | 仓库级完整游戏案例 `Assets/PlaneWar` 的精灵素材,案例内为自包含拷贝(不随包分发) |
 
 完整授权说明见主仓 `Assets/Runestone/AesirModules/Third Party Notices.md` 与各包 `LICENSE.md`。
 

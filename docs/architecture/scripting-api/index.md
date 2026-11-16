@@ -9,7 +9,7 @@ description: "Runestone.AesirArchitecture 系列命名空间的 Scripting API �
 
 ## Runestone.AesirArchitecture
 
-命名空间 `Runestone.AesirArchitecture` · 程序集 `Runestone.AesirArchitecture` · 共 81 个类型。
+命名空间 `Runestone.AesirArchitecture` · 程序集 `Runestone.AesirArchitecture` · 共 82 个类型。
 
 ### 类
 
@@ -28,6 +28,7 @@ description: "Runestone.AesirArchitecture 系列命名空间的 Scripting API �
 | [`AesirMonoBehaviour`](<Runestone/AesirArchitecture/AesirMonoBehaviour.md>) | RAA 架构标准 MonoBehaviour 基类，根据运行环境自动选择序列化方式。 |
 | [`AesirPlayerLoop`](<Runestone/AesirArchitecture/AesirPlayerLoop.md>) | 基于 PlayerLoop 的生命周期钩子系统，无需 MonoBehaviour 即可接入游戏级帧回调。 通过 Register 注册回调，order 越小越先执行；系统自动在… |
 | [`AesirScriptableObject`](<Runestone/AesirArchitecture/AesirScriptableObject.md>) | RAA 架构标准 ScriptableObject 基类，根据运行环境自动选择序列化方式。 |
+| [`AesirTimer`](<Runestone/AesirArchitecture/AesirTimer.md>) | 框架驱动的计时器：创建即开始、到期自动出队，可随时查询剩余时间与进度。 定位是"拿不到每帧回调的地方"的计时手段——纯 C# 的 Model / Service / Comma… |
 | [`AesirView<T>`](<Runestone/AesirArchitecture/AesirView{T}.md>) | View 基类。通过泛型上下文获取模块访问能力，仅具备只读权限，AesirView 自动支持 Odin Inspector 序列化。 |
 | [`AesirViewController<T>`](<Runestone/AesirArchitecture/AesirViewController{T}.md>) | View + Controller 双角色基类。通过泛型上下文获取模块访问能力，自动支持 Odin Inspector 序列化。 |
 | [`CapabilityExtensions`](<Runestone/AesirArchitecture/CapabilityExtensions.md>) | 能力扩展方法集合 |

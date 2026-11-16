@@ -1,6 +1,6 @@
 # UI 框架
 
-Aesir Modules 的 UI 框架采用 Manager-of-Managers 单例模式:`UIRoot` 负责层级与画布,`UIModule` 负责面板与窗口生命周期。UI 有两种并列形态 —— **Panel(面板)** 经 `AesirBasePanel` 家族接入、挂载于共享层 Canvas;**Window(窗口, Canvas 根 UI)** 经 `AesirBaseWindow` 家族接入、预制体自带 Canvas、直接挂载于 UIRoot。
+Aesir Modules 的 UI 框架采用 Manager-of-Managers 单例模式:`UIRoot` 负责层级与画布,`UIModule` 负责面板与窗口生命周期。UI 有三种并列形态 —— **Panel(面板)** 经 `AesirBasePanel` 家族接入、挂载于共享层 Canvas;**Window(窗口, Canvas 根 UI)** 经 `AesirBaseWindow` 家族接入、预制体自带 Canvas、直接挂载于 UIRoot;**World Space Canvas(世界空间 UI)** 以 `WorldSpaceUICanvas` 为渲染根、挂在场景物体上随世界对象移动(血条 / 名字牌 / 交互提示),不进注册表。
 
 ## UIRoot —— UI 根节点
 
@@ -109,6 +109,33 @@ XxxWindow(根: Canvas + CanvasScaler + GraphicRaycaster + 窗口脚本; 类名 =
 
 运行示例见包内 `Samples/UI/01_BasicUsage`(面板与窗口协作、蒙版单遮 / 叠遮运行时切换对照、点击蒙版关闭、全屏加载窗口 payload 自动关闭)。
 
+## 世界空间 UI(World Space Canvas)
+
+第三种并列形态:需要 Canvas 随**世界空间物体**移动时(角色头顶血条 / 名字牌、场景交互提示、VR / AR 标记),使用 `WorldSpaceUICanvas` —— 挂在场景物体上即获得 `RenderMode.WorldSpace` 渲染根,不进入 `UIModule` 注册表。
+
+入口为 `Add Component → Aesir Modules → UI → World Space UI Canvas`;组件在 `Awake` 自动补齐并接线:
+
+- `Canvas`(`RenderMode.WorldSpace`)+ `RectTransform`(方形)+ `CanvasScaler`(`ConstantPixelSize`)+ `GraphicRaycaster`
+- 子树归入 UI 层(5),默认 `sortingOrder` 450 —— 落在面板层(100–400)与窗口(≥500)之间
+- **跟随**:`FollowTarget` 留空即随父级变换移动(推荐把 Canvas 挂在目标子节点);填目标则由组件每帧同步父级变换
+- **朝向**:`FaceCamera` 与 `Billboard`(`None` / `CameraFacingYLocked` / `CameraFacingFull`),`FlipFacing` 反向
+- **偏移**:`PositionOffset`(局部偏移)
+
+运行时创建:
+
+```csharp
+var nameplate = UIRoot.Instance.CreateWorldSpaceCanvas(character.transform, "Nameplate");
+nameplate.Billboard = WorldSpaceUICanvas.WorldSpaceBillboardMode.CameraFacingYLocked;
+```
+
+配置来源优先级:**组件上显式指定的配置 → `UIRoot.WorldSpaceCanvasConfig` → 内存默认 `UICanvasConfigSO.CreateWorldSpaceDefault()`**。世界空间配置与屏幕空间配置(层 Canvas / 窗口根)是两条独立链,互不覆盖:世界空间专用字段为 `Dynamic Pixels Per Unit`(默认 100,决定 UI 在世界中的物理大小)与 `Reference Pixels Per Unit`(默认 100,影响字体 / 精灵基准尺寸),屏幕缩放字段不参与世界空间配置。
+
+!!! warning "世界空间 UI 不进注册表"
+    `WorldSpaceUICanvas` 只提供渲染根:生命周期随宿主场景物体(目标销毁 / 场景卸载),内容由业务代码直接驱动子节点;**不参与** `UIModule` 的 Show / Hide / 蒙版调度。需要面板 / 窗口那种生命周期与注册表管理时,按 Panel 或 Window 形态接入。
+
+!!! note "接线期参数需重建"
+    `Awake` 会自动执行一次 `Build()` 完成接线;`CreateWorldSpaceCanvas` 创建时也带配置执行一次。运行时改跟随目标 / 偏移 / 朝向字段由 `LateUpdate` 每帧读取,立即生效;而**配置与 `sortingOrder` 属于接线期参数**,换配置后需再调用 `Build(overrideConfig)` 才会重新应用到 Canvas。
+
 ## Panel 与 Window 的选型对比
 
 一个项目通常只选一种主形态; 两种形态 API 与生命周期完全对称, 按需混用也成立(窗口恒在面板之上):
@@ -125,6 +152,7 @@ XxxWindow(根: Canvas + CanvasScaler + GraphicRaycaster + 窗口脚本; 类名 =
 - **推荐 Panel**: 常驻 HUD、非模态并存的信息 / 列表面板、同层批量渲染优先 —— 教学与中小项目的默认主形态
 - **推荐 Window**: 模态弹窗(需要挡住下面一切的输入)、全屏流转页(设置 / 暂停 / 结算 / 加载)、需要独立排序或渲染隔离的浮层
 - 全 Window 化(每个界面一个独立 Canvas)也成立, 代价是放弃共享层 Canvas 的合批友好 —— 适合弹窗密集的模态化项目
+- **推荐 World Space Canvas**: 血条 / 名字牌 / 场景交互提示等必须跟随世界物体的 UI —— 只提供渲染根, 没有 Show / Hide 生命周期与注册表, 内容与生命周期由业务代码直接持有
 
 ## 可插拔资源加载
 
@@ -157,6 +185,7 @@ UIModule.Instance.RegisterAssetLoader(new MyAddressablesLoader());
 - **层级体系是封闭集** —— `UILayer` 固定四层(Background / Normal / Popup / Top),层序基准硬编码为 100 / 200 / 300 / 400 且每次初始化强制覆盖;新增层级需修改框架源码
 - **无 per-panel Canvas** —— 同层多面板共享层 Canvas(同图集合批友好);需要动画隔离 / 独立渲染请在面板预制体内自行添加子 Canvas。同层内渲染顺序仅由 Show 顺序决定;需要独立 Canvas、独立排序或蒙版挡输入的**完整界面**请升格为窗口形态
 - **蒙版只服务窗口形态** —— 单遮 / 叠遮调度只作用于窗口的 `Mask` 子物体,面板不提供蒙版(需要遮挡输入的面板应改为窗口)
+- **世界空间 UI 不进注册表** —— `WorldSpaceUICanvas` 只提供随世界对象移动的渲染根,生命周期随宿主场景物体,不经 `UIModule` 的 Show / Hide / 蒙版调度;需要生命周期管理时请按面板 / 窗口形态接入
 - **主相机需自行排除 UI 层** —— UICamera 的 cullingMask 只含 UI 与 TransparentFX 层,主游戏相机若也包含 UI 层会重复渲染
 - **不做** —— 面板 / 窗口导航栈与返回、异步加载接口、层扩展配置;**SmartShowHide 伪隐藏**(全屏窗口弹出时自动伪隐藏被遮挡面板)为下期候选(见包 CHANGELOG 的 Planned 节)
 

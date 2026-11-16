@@ -62,20 +62,37 @@ AesirPlayerLoop.EnsureInjected();
 
 ## 延时与下一帧
 
-框架不内置时间调度原语(0.32.0 起连帧粒度调度器也已整体移除,原 `AesirScheduler` 全仓零使用)。需要"延时执行"时有两条现成路径:
+`AesirTimer` 是框架驱动的倒计时器:每个计时器是**一个独立实例**,创建即开始、到期自动出队,可随时查询 `Remaining` / `Progress`。它经 [PlayerLoop 帧钩子](#playerloop-hooks) 推进(结算顺序取 `int.MinValue`,先于任何用户钩子),因此天然获得注入自愈,既不需要场景物体也不需要协程:
 
 ```csharp
-// ① 纯 C# 对象:用生命周期代理拿到帧回调,配合计时字段自行判定(无场景物体)
-MonoLifecycleProxy.Instance.AddListener(MonoLifecycleEvent.Update, OnTick);
+// ① 一次性延时
+AesirTimer.Countdown(3f, () => model.Refresh());
 
-// ② 需要协程语义时,把驱动方挂在 GameObject 上,用 Unity 原生协程
-yield return new WaitForSeconds(3f);
+// ② 冷却 + 进度条(UI 每帧读 Progress,不需要有人驱动)
+_cooldown = AesirTimer.Countdown(5f);
+float progress = _cooldown.Progress;   // 0 → 1
+_cooldown.Restart();                   // 复用同一实例
+
+// ③ 下一帧执行一次
+AesirTimer.NextFrame(() => RebuildLayout());
+
+// ④ 不受 Time.timeScale 影响(暂停菜单 / UI 动画)
+AesirTimer.Countdown(0.2f, FadeOut, unscaled: true);
 ```
 
-帧驱动本身由 [PlayerLoop 帧钩子](#playerloop-hooks) 提供(每帧持续调用直到注销);"到点调一次"属于业务层的计时字段,不再由框架代管。
+**选路径只看一个问题:你有每帧回调吗?**
+
+| 场景 | 用什么 |
+|------|--------|
+| MonoBehaviour 内部的计时(每帧判定) | 本地 `float` 字段 + `Update` |
+| 纯 C# 类需要每帧逻辑 | `MonoLifecycleProxy` + `ICustomUpdate` |
+| 纯 C# 类只需要"到点做一件事" / "冷却进度" | `AesirTimer` |
+| 需要协程语义(多段等待、依赖对象或动画) | 驱动方挂 GameObject 用协程 |
+
+设计边界:没有 `Start` / `Pause` / `Resume` / `Tick`(工厂方法即开始,暂停靠 `Time.timeScale`);不提供正计时秒表(用 `Time.time` 差值,永不结束的计时器是泄漏源);不做对象池,也不做每帧重复回调的 `Repeat`(到期回调里重建即可)。
 ## MonoLifecycleProxy — 生命周期代理
 
-将 Unity 原生回调统一为可订阅的 MiniEvent;调用期增删监听为**快照语义**(挂起队列趟末应用,对齐原生多播委托),稳态零分配。PlaneWar 示例中与 MiniEvent、ObservableValue 组合运用。
+将 Unity 原生回调统一为可订阅的 MiniEvent;调用期增删监听为**快照语义**(挂起队列趟末应用,对齐原生多播委托),稳态零分配。仓库级完整游戏案例 `Assets/PlaneWar`(Mono 版)即用原生回调对照这一能力。
 
 ## DDOL 显式决策
 

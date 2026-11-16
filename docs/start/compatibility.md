@@ -67,7 +67,7 @@ description: "AesirFramework 的引擎版本、渲染管线、可选依赖(Odin 
 
 - 示例程序集是**运行时程序集 + 整文件 `#if UNITY_EDITOR`**:编辑器内可编译、可挂载、可 Play;玩家构建时整体剔除,示例类型 0 入包
 - 构建时 `AesirSamplesBuildFilter` 会把示例场景从**本次构建选项**中剔除(不改 Build Settings 持久数据)
-- 包内 `Documentation/` 为 Unity TextAsset 格式但无引用,构建自动排除;`Samples~` / `Documentation~` 隐藏目录对 AssetDatabase 不可见
+- 包内 `Documentation~/`(使用文档)与 `TuanjieCowork~/`(技能获取入口)以 `~` 结尾,对 AssetDatabase 不可见、不进 unitypackage;`Samples~` 是 Package Manager 导入示例的唯一来源
 
 ## 相关
 

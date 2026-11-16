@@ -1,5 +1,5 @@
 ---
-description: "AesirFramework 两包共 16 个可导入示例:计数器六档对照、PlaneWar 实战与模块用法演示。"
+description: "AesirFramework 两包共 11 个可导入示例:计数器六档对照、工具类用法与模块演示(另有仓库级完整游戏案例 PlaneWar,不随包分发)。"
 ---
 
 # 示例总览
@@ -53,14 +53,16 @@ description: "AesirFramework 两包共 16 个可导入示例:计数器六档对�
 | **ObservableValue**(需 Odin) | `ObservableValue<T>` 自定义 Drawer:int / float / string / bool / Vector2 基础类型与 struct / class 复合类型在 Inspector 中的编辑与通知 |
 | **ObservableCollections** | `ObservableList<T>` / `ObservableDictionary<TKey, TValue>` / `ObservableHashSet<T>` 变更通知:单轨 `AddListener` 按 Action 分流 Add / Remove / Replace / Move / Reset,经 ContextMenu 触发增删改查 |
 | **RuntimeInitializeLoadType** | 五个 `RuntimeInitializeLoadType` 初始化时机的执行顺序与静态重置实践;菜单 `Tools → Aesir → Architecture → Samples → RuntimeInitializeLoadType`。此为纯编辑器工具程序集(Editor-only + ODIN_INSPECTOR 约束) |
+| **AesirTimer** | 计时器用法:`Countdown` 延时与冷却、`NextFrame`、`Every` 有限 / 无限重复、`Pause` / `Resume` / `Restart` / `Cancel`;面板只读 `Remaining` / `Progress` / `RemainingExecutions` 画进度条(无驱动代码),另含一个不继承 MonoBehaviour 的纯 C# 冷却模型;动作在自定义 Inspector 里点按钮触发,配 `Tools → Aesir → Architecture → Timer Debugger` 对照运行时快照 |
 
-### PlaneWar 实战(Mono 版)
+### 仓库级完整游戏案例(不随包分发)
 
-纵版射击飞机大战完整小游戏 —— 框架机制的组合实战:
+`Assets/PlaneWar/` —— 纵版射击飞机大战完整小游戏,位于源码仓库(宿主工程)而非包内:不进 unitypackage、不进 Package Manager 的 Samples 列表、也不在 Getting Started 窗口出现,克隆仓库后打开 `Assets/PlaneWar/Scenes/PlaneWar.unity` 即可运行。
 
-- 得分 HUD(`ObservableValue` 驱动)、三型敌机、子弹命中计分(A=10 / B=20 / C=30)、坠毁重开流程
-- 组合运用 `MiniEvent` + `ObservableValue` + `MonoLifecycleProxy`
-- 素材自包含:精灵来自 [Vertical 2D Shooting BE4](https://www.goldmetal.co.kr)(Copyright ⓒ 2021 Goldmetal;标注 Goldmetal 出处即可自由使用,含商用),示例内为自包含拷贝
+- 得分 HUD、三型敌机、子弹命中计分(A=10 / B=20 / C=30)、坠毁重开流程,原生 MonoBehaviour 实现(纯 Mono 版不使用框架类型,是"迁移前的基线")
+- 按实际游戏项目分层:`Art/` / `Prefabs/` / `Scenes/` / `Scripts/` / `Materials/`,脚本程序集 `PlaneWar.Mono` 正常编译进玩家构建(不再经示例的 `#if UNITY_EDITOR` 包裹与场景构建剔除)
+- RAA 版(`Scripts/Raa/`)规划中,用于对照"同一款游戏在架构版下的写法"
+- 素材自包含:精灵来自 [Vertical 2D Shooting BE4](https://www.goldmetal.co.kr)(Copyright ⓒ 2021 Goldmetal;标注 Goldmetal 出处即可自由使用,含商用),案例内为自包含拷贝
 
 ## Aesir Modules(5 个)
 

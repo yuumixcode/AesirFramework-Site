@@ -10,7 +10,7 @@ description: "AesirFramework 的已知缺口、暂缓决策与后续计划方向
 
 | 方向 | 缺口 | 现状 |
 | --- | --- | --- |
-| 示例 | PlaneWar 的 RAA 版 | 当前只有 Mono 版;RAA 版用于对照"同一款游戏在架构版下的写法" |
+| 示例 | PlaneWar 的 RAA 版 | 案例已迁到仓库根 `Assets/PlaneWar/`(不随包分发),当前只有 Mono 版;RAA 版(`Scripts/Raa/`)用于对照"同一款游戏在架构版下的写法" |
 | UI | Addressables 资源加载 | `IUIAssetLoader` 契约已预留,只提供 `ResourcesUILoader`。需要时自行实现(契约是同步语义,Addressables 需预加载后同步返回) |
 | 事件 | 系统事件(元事件)与 DefaultChannel | 暂缓:无频道分发机制时频道标签是死元数据(类型键已是完整寻址轴);等频道机制真正立项再一并设计 |
 | 事件 | 单实例合并 | 不实施:`Awake` 已销毁重复实例,订阅统一走 `Instance` 单一通道 |

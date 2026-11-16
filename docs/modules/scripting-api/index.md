@@ -9,7 +9,7 @@ description: "Runestone.AesirModules 系列命名空间的 Scripting API 参考"
 
 ## Runestone.AesirModules
 
-命名空间 `Runestone.AesirModules` · 程序集 `Runestone.AesirModules`、`Runestone.AesirModules.Editor.OdinInspector`、`Runestone.AesirModules.OdinInspector`、`Runestone.AesirModules.UniTask` · 共 65 个类型。
+命名空间 `Runestone.AesirModules` · 程序集 `Runestone.AesirModules`、`Runestone.AesirModules.Editor.OdinInspector`、`Runestone.AesirModules.OdinInspector`、`Runestone.AesirModules.UniTask` · 共 67 个类型。
 
 ### 类
 
@@ -66,6 +66,7 @@ description: "Runestone.AesirModules 系列命名空间的 Scripting API 参考"
 | [`UnityEventOnAesirEvent`](<Runestone/AesirModules/UnityEventOnAesirEvent.md>) | UnityEvent 桥接组件。监听指定类型的 AesirEventArgs， 事件触发时调用 Inspector 中配置的 UnityEvent 回调， 供非程序员在 Ins… |
 | [`WithPriority`](<Runestone/AesirModules/WithPriority.md>) | 按优先级档位过滤。仅绑定在指定档位的订阅者收到事件， 用于"同一事件类型只通知某一档"的定向分发。 |
 | [`WithTag`](<Runestone/AesirModules/WithTag.md>) | 按 Unity Tag 过滤订阅者。仅 Tag 匹配的订阅者收到事件。 用法：new OnExplosion().WithFilter(new WithTag("Enemy")… |
+| [`WorldSpaceUICanvas`](<Runestone/AesirModules/WorldSpaceUICanvas.md>) | 世界空间 UI Canvas 预设组件。挂在场景物体（如角色头顶、交互点）上即可获得一个 WorldSpace 渲染根， UI 随该物体在世界空间中的位置移动… |
 
 </div>
 
@@ -109,6 +110,7 @@ description: "Runestone.AesirModules 系列命名空间的 Scripting API 参考"
 | [`SubscriberPriority`](<Runestone/AesirModules/SubscriberPriority.md>) | 事件订阅者优先级。4 档排序：First → High → Medium → Last。 High 为 Attribute 订阅（[AesirListener]）默认值，Med… |
 | [`UILayer`](<Runestone/AesirModules/UILayer.md>) | UI 层级。Background < Normal < Popup < Top。 |
 | [`UIMaskMode`](<Runestone/AesirModules/UIMaskMode.md>) | 窗口蒙版调度模式，初始值配置于 UIModuleConfigSO（Resources 兜底资产， 编辑器自动创建），运行时可经 MaskMode 切换。 |
+| [`WorldSpaceUICanvas.WorldSpaceBillboardMode`](<Runestone/AesirModules/WorldSpaceUICanvas.WorldSpaceBillboardMode.md>) | 世界空间 UI 的朝向模式。 |
 
 </div>
 
@@ -154,7 +156,7 @@ description: "Runestone.AesirModules 系列命名空间的 Scripting API 参考"
 
 ## Runestone.AesirModules.Editor.OdinInspector
 
-命名空间 `Runestone.AesirModules.Editor.OdinInspector` · 程序集 `Runestone.AesirModules.Editor.OdinInspector` · 共 7 个类型。
+命名空间 `Runestone.AesirModules.Editor.OdinInspector` · 程序集 `Runestone.AesirModules.Editor.OdinInspector` · 共 8 个类型。
 
 ### 类
 
@@ -169,6 +171,7 @@ description: "Runestone.AesirModules 系列命名空间的 Scripting API 参考"
 | [`UICanvasConfigSOAttributeProcessor`](<Runestone/AesirModules/Editor/OdinInspector/UICanvasConfigSOAttributeProcessor.md>) | 为 UICanvasConfigSO 提供 Odin Inspector 属性处理器， 动态注入 Odin 专属显示特性（分组、条件显示等），使 Runtime 程序集零 Od… |
 | [`UIModuleAttributeProcessor`](<Runestone/AesirModules/Editor/OdinInspector/UIModuleAttributeProcessor.md>) | 为 UIModule 提供 Odin Inspector 属性处理器， 动态注入 DDOL 开关的说明与警告信息框，使 Runtime 程序集零 Odin 依赖。 |
 | [`UIRootAttributeProcessor`](<Runestone/AesirModules/Editor/OdinInspector/UIRootAttributeProcessor.md>) | 为 UIRoot 提供 Odin Inspector 属性处理器， 动态注入 Inspector 显示特性，使 Runtime 程序集零 Odin 依赖。 |
+| [`WorldSpaceUICanvasAttributeProcessor`](<Runestone/AesirModules/Editor/OdinInspector/WorldSpaceUICanvasAttributeProcessor.md>) | 为 WorldSpaceUICanvas 提供 Odin Inspector 属性处理器： 动态注入分组与条件显示特性，使 Runtime 程序集零 Odin 依赖。 |
 
 </div>
 

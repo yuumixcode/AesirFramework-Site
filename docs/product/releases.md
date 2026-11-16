@@ -8,15 +8,15 @@ description: "AesirFramework 当前版本、版本策略、发布产物与更新
 
 | 包 | 包名 | 版本 | 发布 |
 | --- | --- | --- | --- |
-| Aesir Architecture | `cn.runestone.aesir.architecture` | **0.32.0** | 2026-10-17 |
-| Aesir Modules | `cn.runestone.aesir.modules` | **0.32.0** | 2026-10-17 |
+| Aesir Architecture | `cn.runestone.aesir.architecture` | **0.33.0** | 2026-11-16 |
+| Aesir Modules | `cn.runestone.aesir.modules` | **0.33.0** | 2026-11-16 |
 
 两包**同号发版**(CI 校验一致),推荐始终安装同版本。完整变更见[更新日志](../changelog.md)。
 
 ## 版本策略
 
 - 版本号遵循[语义化版本](https://semver.org/lang/zh-CN/),变更记录遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)
-- `0.x` 阶段:破坏性 API 变更会在 CHANGELOG 的 **Changed / Removed** 段明确标注,并在包内 `Documentation/设计变更记录` 之外的过程记录中说明来龙去脉
+- `0.x` 阶段:破坏性 API 变更会在 CHANGELOG 的 **Changed / Removed** 段明确标注,来龙去脉写在提交说明与内部笔记仓的过程记录里(包内不保留设计变更记录)
 - 只有 tag 永久保留。版本分支随发版轮换,钉住旧版本请用 tag 而不是分支名
 
 ## 获取方式
@@ -50,11 +50,13 @@ unitypackage 由仓库内的纯 Python 脚本生成(不依赖第三方 CLI),跳�
 
 ## latest 分支是怎么来的
 
-主仓是 monorepo,两个包位于 `Assets/Runestone/` 下。每次推送 `main`:
+主仓是 monorepo(主仓在 CNB,GitHub 为镜像),两个包位于 `Assets/Runestone/` 下。每次推送 `main`,CNB 流水线 `.cnb.yml`:
 
-1. `auto-release.yml` 构建三个 unitypackage 并发布 `v<版本>` Release,同时回写 `update-info.json`(供更新器直连检测)
-2. `auto-publish-branches.yml` 用 `git subtree split` 把每个包滚动发布到 `AesirArchitecture-latest` / `AesirModules-latest`,分支根即包根
-3. 废弃的 `<包>-v<旧版本>` 分支自动清理
+1. `git subtree split` 把每个包滚动发布到 `AesirArchitecture-latest` / `AesirModules-latest`(分支根即包根,并裁掉开发侧 `Samples/` 与 `Documentation/`),同时清理废弃的 `<包>-v<旧版本>` 分支
+2. 回写 `.github/update-info.json`(供更新器直连检测)
+3. 滚动打 `v<版本>` tag,并经 git-sync 把 main / 两包分支 / tag 单向同步到 GitHub
+
+tag 推送后,CNB 与 GitHub 各自构建并发布三个 unitypackage(CNB Release 供国内下载,GitHub Release 供国际用户),两边资产同源。
 
 这也解释了为什么 Git URL 里要带 `#<包>-latest`:包内容在分支根部,不需要 `?path=`。
 

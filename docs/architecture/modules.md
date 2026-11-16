@@ -167,7 +167,7 @@ locator.Unregister<Sword>();          // 注销后再注册,追加到顺序末�
 
 ## Utilities — 工具模块 {#module-utilities}
 
-**作用**:封装 Unity PlayerLoop 这一引擎底层能力,为纯 C# 代码(无 MonoBehaviour)提供游戏级帧驱动 —— 框架不内置时间调度原语(0.32.0 起连帧粒度调度器也已整体移除),需要延时请用 MonoLifecycleProxy 帧代理 + 计时字段,或直接把驱动方挂在 GameObject 上用协程。
+**作用**:封装 Unity PlayerLoop 这一引擎底层能力,为纯 C# 代码(无 MonoBehaviour)提供游戏级帧驱动。延时、冷却与重复执行统一走 `AesirTimer`(0.33.0 起) —— 它复用 `AesirPlayerLoop` 的 `BeforeUpdate` 注入,不自行改 PlayerLoop;有 `Update` 的地方仍推荐本地 float 字段,不要把每帧逻辑塞进计时器。
 
 ### AesirPlayerLoop — 游戏级帧钩子
 
@@ -230,4 +230,4 @@ PlayerLoop 操作的静态工具类,供框架内外扩展使用,不局限于上�
 - [架构概念](concepts.md) —— Core 层的能力接口组合与 Context 生命周期
 - [特性一览](features.md) —— 按卖点视角速览同一批能力
 - [Scripting API](scripting-api/index.md) —— 全部类型的参考文档
-- [示例总览](../product/samples.md) —— MiniEvent / ObservableCollections 独立示例与 PlaneWar 实战
+- [示例总览](../product/samples.md) —— MiniEvent / ObservableCollections 独立示例,以及仓库级完整游戏案例 PlaneWar(不随包分发)

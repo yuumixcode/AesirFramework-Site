@@ -176,11 +176,11 @@ Package Manager → Aesir Architecture → **Samples** 标签页,按需导入:
 | `Counter-Mvc-Quick / Standard / Strict` | MVC 三课 | View 兼 Controller 直改 → 只读暴露 + 写方法 → Command 写 + Query 读 |
 | `Counter-Mvp-Quick / Standard / Strict` | MVP 三课 | 与 MVC 逐课同构,View 被动、Presenter 推送 |
 | `MiniEvent` / `ObservableValue` | 工具类 | MiniEvent 用法 / Odin Drawer 演示(后者需 Odin) |
-| `PlaneWar` | 实战 | 纵版射击完整小游戏:MiniEvent + ObservableValue + MonoLifecycleProxy 组合运用 |
 | `ObservableCollections` | 工具类 | 单轨变更通知 `AddListener` 与集合运算(ContextMenu 驱动) |
 | `RuntimeInitializeLoadType` | 进阶 | 五个初始化时机的执行顺序与静态重置最佳实践(Editor-only) |
+| `AesirTimer` | 工具类 | 延时 / 冷却 / 重复 / 暂停 + 只读查询面板与自定义 Inspector |
 
-本仓库用户也可直接浏览包内 `Samples/` 目录;示例场景可运行,构建时自动剔除(整文件 `#if UNITY_EDITOR`)。
+本仓库用户也可直接浏览包内 `Samples/` 目录;示例场景可运行,构建时自动剔除(整文件 `#if UNITY_EDITOR`)。完整游戏案例 `Assets/PlaneWar/`(纵版射击)位于仓库根而非包内,克隆仓库后直接打开 `Assets/PlaneWar/Scenes/PlaneWar.unity` 即可运行。
 
 > Getting Started 窗口(Tools → Aesir → Getting Started)可一键导入:未导入示例点击右侧「导入 Sample」按钮,确认框含示例介绍与导入位置(可取消),确认后直接导入到 `Assets/Samples/` 并自动刷新示例清单。
 

@@ -23,7 +23,7 @@ hide:
 
 <div class="aesir-hero__meta">
 <span>Unity / 团结引擎 2022.3+</span>
-<span>Architecture + Modules 0.32.0</span>
+<span>Architecture + Modules 0.33.0</span>
 <span>MIT License</span>
 </div>
 
@@ -83,7 +83,7 @@ AesirFramework 由两个同号发布的包组成。先用 **Aesir Architecture**
 
 - 三档渐进路径:快捷 → 标准 → 严格
 - `ObservableValue`、`MiniEvent` 与生命周期能力
-- 11 个可导入示例,包含 6 个计数器对照和 PlaneWar
+- 11 个可导入示例,包含 6 个计数器对照;另有仓库级完整游戏案例 PlaneWar(不随包分发)
 
 [快速开始](architecture/getting-started.md){ .md-button .md-button--primary }
 [特性一览](architecture/features.md){ .md-button }

@@ -11,11 +11,62 @@
 
 | 子包 | 包名 | 版本 |
 |------|------|------|
-| Aesir Architecture | `cn.runestone.aesir.architecture` | **0.32.0** |
-| Aesir Modules | `cn.runestone.aesir.modules` | **0.32.0** |
+| Aesir Architecture | `cn.runestone.aesir.architecture` | **0.33.0** |
+| Aesir Modules | `cn.runestone.aesir.modules` | **0.33.0** |
 
 !!! tip "版本策略"
     两包同号发版(CI 校验一致),推荐同版本安装。Aesir Modules 依赖 Aesir Architecture;Aesir Architecture 不依赖任何 Aesir 子包。
+
+## [0.33.0] - 2026-11-16
+
+**分发形态与文档结构收敛(仓库级) + AesirTimer 计时器原语 + 世界空间 UI Canvas**:PlaneWar 迁出包外成为宿主工程完整游戏案例;两包 `Documentation/` 取消、英文说明升到包根;AI 技能统一为仓库根整包扩展 `AesirFrameworkGame`;CI 主位迁至 CNB。
+
+**仓库级变更**
+
+- **PlaneWar 迁出包外**:从 `Samples/PlaneWar` 迁至仓库根 `Assets/PlaneWar/`,按实际游戏项目分层,场景改名 `PlaneWar.unity`;类名去 `Sample` 前缀、命名空间改 `PlaneWar`、程序集改 `PlaneWar.Mono`、移除整文件 `#if UNITY_EDITOR` 包裹——正常编译进玩家构建。**破坏性**:`package.json` 的 samples 清单少一项,可导入示例回到 11 个;已装旧版残留由更新器差集在下次更新时清理
+- **包内 `Documentation/` 取消**:英文说明升到包根 `README_EN.md`,使用文档只留 `Documentation~/`;`Documentation~/README_EN.md` 删除。代价:unitypackage 用户不再随包拿到使用文档(读本站或克隆仓库)
+- **AI 技能统一到整包扩展 `AesirFrameworkGame`**:两个包各自的技能全部并入仓库根 `.codely-cli/extensions/AesirFrameworkGame/`(11 技能 + 2 模板),包内 `TuanjieCowork~/` 只留一份下载与安装说明;模块技能顶部补「依赖门禁」三条硬规则(探测 → 读记忆 → 询问安装,禁止用原生 API 顶替)
+- **CI 主位迁 CNB**:`.cnb.yml` 接管包分支 split、`update-info.json` 回写、滚动 tag 与 git-sync 推 GitHub;GitHub 侧只保留 tag → Release
+- **`.codely-cli` 入库策略重订**:自研扩展全量入库,其余扩展按 `RESTORE.md` 一条命令重装(新克隆须先装 TJGenerators 扩展再打开工程)
+
+### Aesir Architecture
+
+**Added**
+
+- **`AesirTimer` 计时器原语**:框架驱动的倒计时器,调用即开始、到期自动出队,让纯 C# 的 Model / Service / Command 不借 MonoBehaviour、不借协程即可延时与做冷却进度。每个计时器是独立实例,注册表只保存存活实例用于每帧推进——既可持引用读 `Progress` 喂 UI,也可创建后丢弃(到期自动出队,不泄漏)。注入复用既有 `AesirPlayerLoop`(`BeforeUpdate` + `order: int.MinValue`),继承注入自愈;结算期与执行期两阶段分离,回调内新建 / 取消无需挂起队列;单趟扫描 + 就地压实,O(n) 零分配,同帧到期按创建顺序回调。另提供 `NextFrame(...)` 与 `unscaled` 选项。**有意不做**:`Start`、自带 `Tick` 的不自驱形态、正计时秒表、对象池
+- **`AesirTimer.Every` / `Pause` / `Resume` / `RemainingExecutions`**:`Every(interval, onTick, repeatCount = -1, unscaled = false)` 首次回调在 `interval` 之后,有限次数用尽自动出队;一帧卡顿跨越多个间隔只回调一次(重新装填用 `= duration` 而非 `+=`);`Pause` / `Resume` 只挂起单实例,`Resume` 对 `NextFrame` 重新对齐结算周期号;`Restart` 复位剩余时间、执行计数与暂停态
+- **计时器调试面板 `Tools → Aesir → Architecture → Timer Debugger`**:Odin 版 + IMGUI 兜底版,priority 996。拉取与重绘分离(按时间 0.05–10 秒 / 按帧 1–600,`EditorPrefs` 持久化),显示状态 / 形态 / 时间源 / 剩余 / 进度 / 已执行 / 还剩次数 / 存活时长 / 回调归属与累计统计;编辑模式无数据源,统计与表格恒为零
+- **计时器字段检视**:原生 `[CustomPropertyDrawer]`(需 `[SerializeReference]`)与 Odin `OdinValueDrawer`,共用文案与进度条样式;绘制器取值走 `fieldInfo` 反射而非 `SerializedProperty.managedReferenceValue`
+- **`AesirTimer` 示例**:延时 / 冷却 / 有限重复进入 Play 自动开始,其余动作经自定义 Inspector 按钮触发,面板只读 `Remaining` / `Progress` / `RemainingExecutions`(查询式计时示范);另含不继承 MonoBehaviour 的纯 C# 冷却模型 `SkillCooldown`
+- **计时器测试**:EditMode 15 例(到期、保序、回调内新建、取消互斥、边界、`Restart`、`NextFrame`、`unscaled`、重复与暂停)+ PlayMode 3 例(真实 PlayerLoop 跨帧、`NextFrame`、`timeScale = 0`)
+
+**Changed**
+
+- **计时器面板数据源与样式解耦**:拆为 `AesirTimerSnapshot` / `AesirTimerStatistics`(只搬数据)→ `AesirTimerDebugSource`(抓取节奏与汇总)→ `AesirTimerText`(文案与颜色)→ `AesirTimerSummaryView`(进度条与摘要);IMGUI 窗口、Odin 窗口与两种绘制器统一消费快照
+- **AI 技能迁出包外**:六篇架构技能并入仓库根扩展 `AesirFrameworkGame`,包内只留导流文档;`README` / `README_EN` 结构树与模式决策链接改指扩展内文件
+
+**Removed**
+
+- **PlaneWar 示例移出包外(破坏性)**见上方仓库级变更
+- **`references/jam-playbook.md`(jam 实战手册)**:核心缺口(计时器)已由 `AesirTimer` 在框架内解决,继续保留"手抄一份补件"与「同一需求只留一条路径」冲突;工程目录约定与自检要点已并入 `aesir-framework` 技能
+
+**Fixed**
+
+- **Getting Started「打开场景」强制另存临时场景**:`OpenSampleScene` 原用 `SaveOpenScenes()` 一次保存全部打开场景,对无资产路径的临时场景只能弹出另存为面板;改为 `SaveModifiedScenes()`——有路径的静默落盘,无路径的跳过并走标准询问(不保存 / 取消 / 保存),取消才中止切换
+
+### Aesir Modules
+
+**Added**
+
+- **世界空间 UI Canvas 预设(`WorldSpaceUICanvas`)**:`RenderMode.WorldSpace` 预设,自动接线 Canvas / RectTransform(square) / CanvasScaler(ConstantPixelSize) / GraphicRaycaster,子树归入 UI 层(5),默认 sortingOrder 450;支持跟随父级或显式 `FollowTarget` + `PositionOffset`,以及 `FaceCamera` / `Billboard` / `FlipFacing` 朝向控制。世界空间 UI 是 Panel / Window 之外的第三种形态,**不进 UIModule 注册表与蒙版调度**,生命周期随宿主场景物体;配置走独立链(组件 → `UIRoot.WorldSpaceCanvasConfig` → `UICanvasConfigSO.CreateWorldSpaceDefault()`)
+- **世界空间 Canvas 守护用例**:`Tests/Editor/UI/WorldSpaceUICanvasTests.cs` 7 例(默认配置、接线、跳过屏幕 Scaler、sortingOrder / UI 层、跟随目标与偏移、运行时创建、空目标防呆)
+
+**Changed**
+
+- **AI 技能统一到扩展 + 依赖门禁**:四个模块技能并入 `AesirFrameworkGame`,包 `README` / `README_EN` 的「AI 技能包」小节改写;缺 RAM / RAA 时 AI 先探测、再读记忆、未明确禁止才询问安装
+- **`Documentation/` 取消**:五篇模块使用文档只保留在 `Documentation~/`
+
+---
 
 ## [0.32.0] - 2026-10-17
 
