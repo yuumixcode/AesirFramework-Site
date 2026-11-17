@@ -6,7 +6,12 @@ site_author = "yuumixcode"
 copyright = "© 2026 Runestone Yuumix · MIT License"
 repo_url = "https://github.com/yuumixcode/AesirFramework-Site"
 repo_name = "yuumixcode/AesirFramework-Site"
-edit_uri = "edit/main/docs/"
+# edit_uri 必须置空(空串,不是删键):zensical 0.1.x 会把「仓库地址 + edit_uri + 页面源路径」拼成
+# 绝对 URL 并按 IRI 校验;Scripting API 页的源文件名含 C# 泛型占位(如 ObservableList{T}.md),
+# 花括号在 IRI 中非法 → 每个此类页面触发一次 panic(共 41 次),连带 51 条链接告警。
+# 置空后不生成「编辑此页」链接,仓库入口由 header 的仓库按钮与 nav 末项「GitHub」承担。
+# 注意:删掉 edit_uri 这一行会被 zensical 自动回填为 edit/master/docs,同样 panic —— 必须显式置空。
+edit_uri = ""
 nav = [
   { "首页" = "index.md" },
   { "开始" = [
@@ -361,7 +366,7 @@ nav = [
 ]
 extra_css = ["stylesheets/extra.css", "stylesheets/api.css"]
 # 搜索面板在 shadow DOM 内,外部样式无法触达,需用脚本补中文 placeholder 与熔金焦点环
-extra_javascript = ["javascripts/aesir-search.js"]
+extra_javascript = ["javascripts/aesir-search.js", "javascripts/aesir-a11y.js"]
 
 [project.theme]
 variant = "modern"

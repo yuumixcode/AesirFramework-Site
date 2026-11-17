@@ -16,7 +16,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
-      - run: pip install "zensical==0.0.65"  # 锁定版本，避免 0.x 期间上游破坏性变更导致部署失败
+      - run: pip install "zensical==0.1.1"  # 锁定版本，避免 0.x 期间上游破坏性变更导致部署失败
+      # 0.1.1 的硬性前提:zensical.toml 里 edit_uri 必须置空("")，
+      # 否则它会把「仓库地址 + edit_uri + 页面源路径」拼成绝对 URL 做 IRI 校验，
+      # 而 Scripting API 页的源文件名含 C# 泛型占位(如 ObservableList{T}.md)，花括号非法 → 构建 panic。
       - run: zensical build --strict
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

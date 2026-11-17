@@ -20,7 +20,7 @@
 
 ## 技术栈
 
-- [Zensical](https://zensical.org/)(Rust 静态站生成器,Material for MkDocs 继任者),当前锁定 `0.0.65`
+- [Zensical](https://zensical.org/)(Rust 静态站生成器,Material for MkDocs 继任者),当前锁定 `0.1.1`
 - 内容:Markdown(`docs/`),配置:`zensical.toml`
 - 部署:GitHub Pages(GitHub Actions,见 `.github/workflows/deploy.yml`)
 
@@ -37,12 +37,13 @@
 | 正文体 | Inter | 段落、界面文字 |
 | 等宽体 | JetBrains Mono | 代码、标签、版本号 |
 
-四条约定:
+五条约定:
 
 - **字体自托管。** `docs/assets/fonts/` 放的是可变字体的拉丁子集(共约 111 KB),`zensical.toml` 里 `theme.font = false` 关掉了主题默认的 Google Fonts 链接 —— 避免国内不可达与第三方依赖。中文交给系统字体(PingFang SC / 微软雅黑 / Noto Sans SC)。
 - **Material modern 把 `html` 设为 20px**,所以 `1rem = 20px`。写尺寸前先按目标 px 折算,别按 16px 想当然。
 - **改 Material 变量要压过调色板 CSS。** 调色板用 `[data-md-color-scheme=x][data-md-color-primary=y]`(0,2,0),本站用 `body[data-md-color-scheme=x][data-md-color-primary]`(0,2,1) 覆盖。
 - **页签活动条只画一条。** Material 把活动指示条画在 `.md-tabs__item--active` 上(`border-bottom:.05rem solid var(--md-default-fg-color)`),不在 `.md-tabs__link` 上。在链接上再画一条会叠成双线 —— 本站只覆写颜色:`.md-tabs__item--active { border-bottom-color: var(--aesir-gold) }`,链接上不再加边框。
+- **`edit_uri` 必须显式置空。** zensical 0.1.x 会把「仓库地址 + `edit_uri` + 页面源路径」拼成绝对 URL 并按 IRI 校验,而 Scripting API 页的源文件名含 C# 泛型占位(`ObservableList{T}.md`),花括号在 IRI 中非法 → 每个此类页面触发一次 panic(共 41 次),连带 51 条链接告警。写成 `edit_uri = ""`(空串)即可不生成编辑链接;**删掉这一行不行**,zensical 会自动回填成 `edit/master/docs`,照样 panic。仓库入口由 header 的仓库按钮与 nav 末项「GitHub」承担。
 
 ### 图标资产
 
@@ -65,17 +66,28 @@
 
 ### 搜索面板在 Shadow DOM 里
 
-zensical 0.0.65 的搜索组件把 UI 渲染进 `attachShadow({mode:"open"})` 的 shadow root(类名是哈希值,如 `e`/`p`/`l`,不可写 CSS 选择器)。两个结论:
+zensical 0.1.1 的搜索组件把 UI 渲染进 `attachShadow({mode:"open"})` 的 shadow root(类名是哈希值,如 `e`/`p`/`l`,不可写 CSS 选择器)。两个结论:
 
 - **外部样式表触达不到面板内部。** 主题 CSS 变量可以穿透继承(面板的 `--color-highlight` 就指向 `--md-accent-fg-color`),所以熔金高亮是自动生效的。
 - **验证搜索是否可用必须穿透 shadow root。** `document.querySelector(".md-search__form")` 永远返回 `null`,那是**测量方式错了,不是功能坏了**。正确写法是遍历 `document.querySelectorAll("*")` 找带 `shadowRoot` 的元素,再 `host.shadowRoot.querySelector("input")`。
 
 面板内烤死的英文文案(placeholder、`Filters`、`Tags`、`N results`)没有 locale 表可覆盖,由 `docs/javascripts/aesir-search.js` 在运行时替换;同时补一个熔金焦点环。面板每次重绘都会重建 DOM,脚本用 MutationObserver 持续补齐。
 
+### 版本:0.0.65 → 0.1.1
+
+0.1.1 相对 0.0.65 有两处与本站直接相关:
+
+- **构建会 panic。** 见上面第 5 条约定(`edit_uri` 必须置空)。41 个带泛型占位的 API 页各触发一次 panic,并连带 51 条「page does not exist」链接告警,`--strict` 与非 strict 都会以 exit 1 失败。这与上游 issue [#1147](https://github.com/zensical/zensical/issues/1147) 同源(该 issue 描述的是方括号,成因相同)。
+- **header 图标按钮丢了可访问名称。** 0.0.65 的抽屉 / 搜索按钮带 `aria-label`,0.1.1 去掉了,图标按钮对读屏软件变成无名称元素。由 `docs/javascripts/aesir-a11y.js` 补回(检测到上游已给出名称时会跳过,不覆盖)。
+
+除此之外零回归:根字号仍是 `html{font-size:125%}`(1rem=20px)、页签活动条仍画在 `.md-tabs__item--active` 上、搜索仍在 shadow DOM 内、图标与产物文件数一致(343 个)。用同一套脚本跑 0.0.65 与 0.1.1,12 项断言结果完全相同。
+
+0.1.x 还原生支持 MkDocs 的 `social` 插件(自动生成 OG / Twitter 卡片与社交分享图),这是补社交分享图的最省事路径,目前尚未启用。
+
 ## 本地开发
 
 ```bash
-pip install "zensical==0.0.65"   # 或 pipx install zensical
+pip install "zensical==0.1.1"   # 或 pipx install zensical
 zensical serve                   # 本地预览,默认 http://localhost:8000
 zensical build                   # 构建到 site/
 zensical build --strict          # 严格模式(CI 用,警告即失败)
@@ -103,7 +115,7 @@ docs/
 │   ├── logo.png / favicon.png / favicon.ico / apple-touch-icon.png
 │   ├── rune.png             # 英雄区符文的 alpha-only 遮罩
 │   └── fonts/               # 自托管字体(拉丁子集 woff2)
-├── javascripts/             # aesir-search.js(搜索面板 shadow DOM 补丁)
+├── javascripts/             # aesir-search.js(搜索面板 shadow DOM 补丁)、aesir-a11y.js(header 图标按钮可访问名称)
 └── stylesheets/             # extra.css(设计系统 + 产品页样式)、api.css(API 页样式)
 
 favicon.ico / apple-touch-icon.png / favicon.png   # 站点根目录副本,浏览器自动发现
