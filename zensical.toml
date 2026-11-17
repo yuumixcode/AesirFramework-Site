@@ -360,12 +360,17 @@ nav = [
   { "GitHub" = "https://github.com/yuumixcode/AesirFramework" },
 ]
 extra_css = ["stylesheets/extra.css", "stylesheets/api.css"]
+# 搜索面板在 shadow DOM 内,外部样式无法触达,需用脚本补中文 placeholder 与熔金焦点环
+extra_javascript = ["javascripts/aesir-search.js"]
 
 [project.theme]
 variant = "modern"
 language = "zh"
 logo = "assets/logo.png"
 favicon = "assets/favicon.png"
+# 自托管字体(Space Grotesk / Inter / JetBrains Mono,拉丁子集):
+# 关闭主题默认的 Google Fonts 链接,规避国内不可达与外部依赖。
+font = false
 features = [
   "navigation.instant",
   "navigation.tracking",

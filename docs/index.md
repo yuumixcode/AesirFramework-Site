@@ -7,11 +7,14 @@ hide:
 
 <div class="aesir-hero" markdown>
 
-# AesirFramework
+<div class="aesir-hero__badge">0.33.0 · Unity / 团结引擎 2022.3+</div>
 
-**面向 Unity / 团结引擎的渐进式 MVC 架构与功能模块。**
+<h1 class="aesir-hero__title">
+<span class="aesir-hero__word">AesirFramework</span>
+<span class="aesir-hero__claim">面向 Unity / 团结引擎的渐进式 MVC 架构</span>
+</h1>
 
-从一个简单的 `MonoBehaviour` 开始,按项目复杂度逐步引入 Context、Model、Service、Command / Query 与 View。AesirFramework 不替你重建 Unity,而是把 Unity 原生能力组织成清晰、可测试、可扩展的工作流。
+<p class="aesir-hero__lead">从一个简单的 <code>MonoBehaviour</code> 开始,按项目复杂度逐步引入 Context、Model、Service、Command / Query 与 View。AesirFramework 不替你重建 Unity,而是把 Unity 原生能力组织成清晰、可测试、可扩展的工作流。</p>
 
 <div class="aesir-hero__actions" markdown>
 
@@ -21,24 +24,29 @@ hide:
 
 </div>
 
-<div class="aesir-hero__meta">
-<span>Unity / 团结引擎 2022.3+</span>
-<span>Architecture + Modules 0.33.0</span>
+<div class="aesir-hero__meta" markdown>
+
 <span>MIT License</span>
+<span>Architecture + Modules 0.33.0</span>
+<span>800+ EditMode 单元测试</span>
+<span>核心零第三方依赖</span>
+
 </div>
 
 </div>
 
 ## 从这里开始
 
-| 你的情况 | 去哪里 |
-| --- | --- |
-| 第一次接触,想先把包跑起来 | [安装与升级](start/installation.md) → [Architecture 快速开始](architecture/getting-started.md) |
-| 想知道这套框架能做什么 | [特性总览](product/features.md) · [示例总览](product/samples.md) |
-| 需要现成的 UI / 事件 / 音频 / 场景能力 | [Modules 快速开始](modules/getting-started.md) · [UI 框架](modules/ui.md) |
-| 想比较不同复杂度的写法 | [计数器六档对照](product/samples.md) —— 同一界面六种分层 |
-| 要查具体类型与成员 | [Scripting API](architecture/scripting-api/index.md) |
-| 关心版本、升级或兼容性 | [版本与下载](product/releases.md) · [兼容性](start/compatibility.md) |
+<div class="aesir-paths" markdown>
+
+<a href="start/installation.md"><b>第一次接触,想先把包跑起来</b><span>安装与升级 → Architecture 快速开始</span><em>开始</em></a>
+<a href="product/features.md"><b>想知道这套框架能做什么</b><span>特性总览 · 示例总览</span><em>产品</em></a>
+<a href="modules/getting-started.md"><b>需要现成的 UI / 事件 / 音频 / 场景能力</b><span>Modules 快速开始 · UI 框架</span><em>Modules</em></a>
+<a href="product/samples.md"><b>想比较不同复杂度的写法</b><span>计数器六档对照 —— 同一界面六种分层</span><em>示例</em></a>
+<a href="architecture/scripting-api/index.md"><b>要查具体类型与成员</b><span>Scripting API 命名空间与成员参考</span><em>API</em></a>
+<a href="product/releases.md"><b>关心版本、升级或兼容性</b><span>版本与下载 · 兼容性</span><em>版本</em></a>
+
+</div>
 
 ## 安装
 
@@ -75,7 +83,7 @@ AesirFramework 由两个同号发布的包组成。先用 **Aesir Architecture**
 
 <div class="aesir-package-card" markdown>
 
-<span class="aesir-card__eyebrow">CORE ARCHITECTURE</span>
+<span class="aesir-card__eyebrow">Core Architecture</span>
 
 ### Aesir Architecture
 
@@ -92,7 +100,7 @@ AesirFramework 由两个同号发布的包组成。先用 **Aesir Architecture**
 
 <div class="aesir-package-card" markdown>
 
-<span class="aesir-card__eyebrow">OPTIONAL MODULES</span>
+<span class="aesir-card__eyebrow">Optional Modules</span>
 
 ### Aesir Modules
 
@@ -156,7 +164,7 @@ public class CounterPanel : MonoViewController<CounterContext>
 
 <div class="aesir-value-card" markdown>
 
-**01 · 渐进式**
+**渐进式**
 
 不要求新项目一次性接受完整框架。先写能运行的代码,再按复杂度引入接口组合、Context 和严格分层。
 
@@ -164,7 +172,7 @@ public class CounterPanel : MonoViewController<CounterContext>
 
 <div class="aesir-value-card" markdown>
 
-**02 · Unity 原生优先**
+**Unity 原生优先**
 
 深度使用 PlayerLoop、序列化与编辑器能力,不搭建与引擎平行的运行时;静态状态显式重置,反复进出 Play Mode 无残留。
 
@@ -172,7 +180,7 @@ public class CounterPanel : MonoViewController<CounterContext>
 
 <div class="aesir-value-card" markdown>
 
-**03 · 依赖边界清楚**
+**依赖边界清楚**
 
 核心架构零第三方依赖;Odin、Addressables、Input System 经独立程序集与条件编译接入,未安装可选依赖不影响基础流程。
 
@@ -180,7 +188,7 @@ public class CounterPanel : MonoViewController<CounterContext>
 
 <div class="aesir-value-card" markdown>
 
-**04 · 工程化交付**
+**工程化交付**
 
 800+ EditMode 单元测试随包验证;CI 自动维护常驻 latest 分支与 unitypackage 发布;示例构建期自动剔除,不占包体。
 
@@ -202,10 +210,56 @@ public class CounterPanel : MonoViewController<CounterContext>
 
 ## 文档地图
 
-- **产品**:[特性总览](product/features.md) · [示例总览](product/samples.md) · [版本与下载](product/releases.md) · [路线图](product/roadmap.md) · [工具链与生态](product/ecosystem.md)
-- **上手**:[安装与升级](start/installation.md) · [兼容性](start/compatibility.md) · [FAQ](faq.md)
-- **Architecture**:[概览](architecture/index.md) · [架构概念](architecture/concepts.md) · [响应式与事件](architecture/observable.md) · [可观察集合](architecture/observable-collections.md) · [内置功能模块](architecture/modules.md) · [包内更新器](architecture/updater.md)
-- **Modules**:[概览](modules/index.md) · [UI 框架](modules/ui.md) · [事件模块](modules/events.md) · [音频模块](modules/audio.md) · [场景模块](modules/scene.md)
-- **参考**:[Scripting API](architecture/scripting-api/index.md) · [更新日志](changelog.md) · [支持与贡献](support.md)
+<div class="aesir-map-grid" markdown>
+
+<div class="aesir-map-card" markdown>
+
+<span class="aesir-card__eyebrow">产品</span>
+
+### 特性 · 示例 · 版本
+
+特性总览、示例总览、版本与下载、路线图、工具链与生态。
+
+[进入产品文档 →](product/features.md){ .md-button }
+
+</div>
+
+<div class="aesir-map-card" markdown>
+
+<span class="aesir-card__eyebrow">上手</span>
+
+### 安装 · 兼容性 · FAQ
+
+安装与升级、兼容性矩阵、常见问题。
+
+[进入上手文档 →](start/installation.md){ .md-button }
+
+</div>
+
+<div class="aesir-map-card" markdown>
+
+<span class="aesir-card__eyebrow">Architecture</span>
+
+### 架构核心
+
+架构概念、响应式与事件、可观察集合、包内更新器。
+
+[进入架构文档 →](architecture/index.md){ .md-button }
+
+</div>
+
+<div class="aesir-map-card" markdown>
+
+<span class="aesir-card__eyebrow">Modules</span>
+
+### 功能模块
+
+UI 框架、事件模块、音频模块、场景模块。
+
+[进入模块文档 →](modules/index.md){ .md-button }
+
+</div>
+
+</div>
 
 发现问题时,请附上 Unity / 团结引擎版本、AesirFramework 版本和最小复现步骤,前往 [GitHub Issues](https://github.com/yuumixcode/AesirFramework/issues) 反馈。

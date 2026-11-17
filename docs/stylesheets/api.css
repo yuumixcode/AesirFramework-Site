@@ -11,15 +11,15 @@
 }
 
 :root {
-  --aesir-api-border: rgba(29, 35, 48, 0.14);
-  --aesir-api-header-bg: rgba(29, 35, 48, 0.045);
-  --aesir-api-row-hover: rgba(91, 92, 226, 0.05);
+  --aesir-api-border: var(--aesir-line);
+  --aesir-api-header-bg: var(--aesir-surface);
+  --aesir-api-row-hover: var(--aesir-gold-wash);
 }
 
 [data-md-color-scheme="slate"] {
-  --aesir-api-border: rgba(226, 229, 255, 0.18);
-  --aesir-api-header-bg: rgba(255, 255, 255, 0.05);
-  --aesir-api-row-hover: rgba(154, 155, 255, 0.08);
+  --aesir-api-border: var(--aesir-line);
+  --aesir-api-header-bg: var(--aesir-surface);
+  --aesir-api-row-hover: var(--aesir-gold-wash);
 }
 
 /* 概览 / 参数 / 返回值表格:全宽细边框,表头浅底,行 hover。
