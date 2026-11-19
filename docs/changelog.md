@@ -11,11 +11,30 @@
 
 | 子包 | 包名 | 版本 |
 |------|------|------|
-| Aesir Architecture | `cn.runestone.aesir.architecture` | **0.33.0** |
-| Aesir Modules | `cn.runestone.aesir.modules` | **0.33.0** |
+| Aesir Architecture | `cn.runestone.aesir.architecture` | **0.34.0** |
+| Aesir Modules | `cn.runestone.aesir.modules` | **0.34.0** |
 
 !!! tip "版本策略"
     两包同号发版(CI 校验一致),推荐同版本安装。Aesir Modules 依赖 Aesir Architecture;Aesir Architecture 不依赖任何 Aesir 子包。
+
+## [0.34.0] - 2026-11-19
+
+**编辑器工具去 Odin 化 + AesirTimer 分层重构 + 配置资产显式创建(仓库级)**:RAA/RAM 运行时代码一律不依赖 Odin Inspector(有/无 Odin 编译均 0 error),编辑器窗口与 Drawer 改用 UI Toolkit,Odin 降级为纯样式开关。
+
+**仓库级变更**
+
+- **编辑器工具去 Odin 化 + UI Toolkit 复刻**:Getting Started / Timer Debugger / Update / Scene Settings 四窗口与三个 Drawer 改 UI Toolkit;新增 `Preferences → Aesir` 偏好页 + Editor 专属样式 SO(不进构建),Odin 降级为纯样式开关;SceneAssetWrapper 绘制改 UI Toolkit 优先 + IMGUI 兜底、零 Odin 依赖
+- **AI 扩展 `AesirFrameworkGame` 1.2.0 → 1.3.0**:新增 `aesir-project-structure` 技能(12 技能),统一资产命名去类型前缀与工程目录约定;按 PlaneWar 三篇复盘优化 boot-scene / framework / ui / router 技能
+- **移除 Binder / SDG 的 UI Toolkit 窗口**:两个工具只保留原 Odin 窗口,数据层零 Odin 依赖不变
+
+**Aesir Architecture**
+
+- **`AesirTimer` 分层重构(无破坏性)**:拆为 `AbstractTimer` 抽象基类 + 六种具体计时器(`Countdown` / `NextFrame` / `Repeating` / `Interval` / `Frequency` / `Stopwatch`),既有公开 API 零改动;示例补三种新形态,新增 9 例 EditMode 用例
+
+**Aesir Modules**
+
+- **模块配置资产改为显式创建(行为变更)**:移除导入即自动创建,改菜单 `Tools/Aesir/Modules/Create Module Config Assets` + 运行时内存兜底,不再写用户工程
+- **UI 实例化简化**:移除停用模板机制改 `Instantiate → SetActive(false)`,实例名去重复 `(Clone)`;补 `Resources.Load` 资产语义实证与决策复盘文档
 
 ## [0.33.0] - 2026-11-16
 
