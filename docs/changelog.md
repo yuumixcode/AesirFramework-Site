@@ -11,11 +11,24 @@
 
 | 子包 | 包名 | 版本 |
 |------|------|------|
-| Aesir Architecture | `cn.runestone.aesir.architecture` | **0.34.0** |
-| Aesir Modules | `cn.runestone.aesir.modules` | **0.34.0** |
+| Aesir Architecture | `cn.runestone.aesir.architecture` | **0.34.1** |
+| Aesir Modules | `cn.runestone.aesir.modules` | **0.34.1** |
 
 !!! tip "版本策略"
     两包同号发版(CI 校验一致),推荐同版本安装。Aesir Modules 依赖 Aesir Architecture;Aesir Architecture 不依赖任何 Aesir 子包。
+
+## [0.34.1] - 2026-11-20
+
+**测试基础设施修复(仓库级)**:补回测试程序集的 Odin 预编译引用,修正 SDG 测试夹具路径。无运行时代码变更,门禁数字与 0.34.0 一致。
+
+**Aesir Architecture**
+
+- **恢复 PlayMode 测试程序集的 Odin 预编译引用**:`fdc5724b` 误删后,测试一碰 `AesirMonoBehaviour` 基类链即 `CS0012`;补回 `Sirenix.*.dll` 引用
+
+**Aesir Modules**
+
+- **恢复三个测试程序集的 Odin 预编译引用**:`Tests.Editor` / `Tests` / `Tests.UniTask` 同上修复
+- **`ScriptDocGeneratorApiTests` 临时夹具移出包内只读目录**:改在可写 `Assets/` 下创建,规避 UPM immutable folder 拿不到 `.meta` 的问题
 
 ## [0.34.0] - 2026-11-19
 

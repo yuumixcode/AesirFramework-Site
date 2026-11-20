@@ -42,6 +42,45 @@ Modules 依赖 Architecture(必需)。UPM 对 Git URL 安装的包不会自动�
 
 请确认使用 Unity / 团结引擎 2022.3+,并完整导入包(含 `Samples`)。本仓库直接浏览时示例就在 `Samples/` 目录下,场景可直接打开运行。
 
+## 测试与 testables
+
+### 能在自己的项目里跑框架的单元测试吗?
+
+能。框架的测试程序集随 UPM 形态保留(包内 `Tests/` 目录不删),默认不编译、不污染你的工程。想跑的话,在 `Packages/manifest.json` 的 `testables` 数组里加上包 ID:
+
+```json
+"testables": [
+  "cn.runestone.aesir.architecture",
+  "cn.runestone.aesir.modules"
+]
+```
+
+保存后 Package Manager 会编译对应测试程序集,在 `Window → General → Test Runner` 里即可运行。只需要哪个包就加哪个 ID,不影响另一个。
+
+### 框架的单元测试到底在测什么?
+
+测试守护的是**框架的公开行为契约** —— 例如 ObservableValue 的"无变化不通知"、可观察集合的变更事件语义、计时器的状态转换、UI 面板的生命周期等。这些用例在框架的**开发仓库环境**中编写和运行,"全绿"的含义是:**框架开发者改代码时没有破坏这些对外承诺**。
+
+因此用例里带着开发环境的几个隐含前提:
+
+- 包源码位于 `Assets/Runestone/` 下(而非 `Packages/`)
+- Odin Inspector / UniTask 等可选依赖在场
+- 工程内存在模块配置的基线资产
+
+### 开了 testables,为什么有少量测试失败?
+
+这通常是**环境差异**,不代表功能不可用。上面的隐含前提在你的 UPM 工程里大多不成立 —— 路径断言指向的 `Assets/Runestone/...` 不存在、"RAA 以源码形态在场且未经 UPM 注册"的判定被反转、`Resources` 基线资产没有创建。碰巧引用了这些前提的用例就会变红,而框架功能本身没坏。
+
+判断标准请按这个顺序:
+
+| 现象 | 结论 | 处理 |
+|------|------|------|
+| 包和测试程序集**编译通过**,仅少数用例因路径 / 环境假设失败 | 环境差异,功能正常 | 可忽略,或在 issue 里附用例名反馈 |
+| 示例场景打不开、菜单报 Missing Script、功能在**你的工程里确实用不了** | 真缺陷 | 提 [GitHub Issues](https://github.com/yuumixcode/AesirFramework/issues),附复现步骤与 Unity 版本 |
+| 编译就失败(CS 错误) | 依赖或版本问题 | 检查可选依赖安装情况与 Unity 版本,按错误信息排查 |
+
+> 换句话说:测试"全绿"是**框架作者的开发门禁**,不是**消费者的验收标准**。你这边真正该确认的,是包能编译、示例能跑、需要的功能正常工作。
+
 ## 高频陷阱与修法
 
 > 完整 10 条陷阱清单见 AI 技能 `aesir-pitfalls`(仓库根 `.codely-cli/extensions/AesirFrameworkGame/skills/aesir-pitfalls/SKILL.md`)。异常消息已含修复指引(fail-fast)。
