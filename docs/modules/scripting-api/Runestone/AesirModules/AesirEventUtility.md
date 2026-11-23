@@ -19,7 +19,7 @@ description: "Runestone.AesirModules.AesirEventUtility 的 API 文档"
 public static class AesirEventUtility
 ```
 
-事件模块静态工具方法。
+事件模块静态工具方法：Unity null 检测与 GameObject 解析， 供订阅者过滤器与诊断门面解析发布者/订阅者。
 
 ## 方法
 
@@ -31,9 +31,6 @@ public static class AesirEventUtility
 | :--- | :--- |
 | [`IsObjectUnityNull(object)`](#method-isobjectunitynull-object) | 检测对象是否为 Unity 假 null（已销毁但引用未置空）。 |
 | [`TryGetGameObject(object, ref GameObject)`](#method-trygetgameobject-object-ref-gameobject) | 尝试将对象解析为 GameObject。支持 GameObject 本身与任意 Component（含 MonoBehaviour）。供订阅者过滤器解析发布者/订阅者。 |
-| [`GetEventBindingKey(AesirEventArgs)`](#method-geteventbindingkey-aesireventargs) | 获取事件的绑定键（事件类型的 AssemblyQualifiedName）。 按事件类型缓存，同类型重复发布复用同一字符串实例（热路径零分配）。 |
-| [`GetEventBindingKey()`](#method-geteventbindingkey) | 获取事件类型的绑定键（事件类型的 AssemblyQualifiedName）。 按事件类型缓存，同类型重复发布复用同一字符串实例（热路径零分配）。 |
-| [`GetEventName()`](#method-geteventname) | 获取事件类型的简短名称。 |
 
 </div>
 
@@ -106,70 +103,6 @@ public static bool TryGetGameObject(object obj, out ref GameObject gameObject)
 | 类型 | 说明 |
 | :--- | :--- |
 | `bool` | 成功解析返回 true。已销毁的 Unity 对象（假 null）与纯 C# 对象均返回 false。 |
-
-</div>
-
-### GetEventBindingKey(AesirEventArgs) {#method-geteventbindingkey-aesireventargs}
-
-获取事件的绑定键（事件类型的 AssemblyQualifiedName）。 按事件类型缓存，同类型重复发布复用同一字符串实例（热路径零分配）。
-
-``` csharp
-public static string GetEventBindingKey(AesirEventArgs eventArgs)
-```
-
-**参数**
-
-<div class="api-params-table" markdown="1">
-
-| 名称 | 类型 | 说明 |
-| :--- | :--- | :--- |
-| `eventArgs` | `AesirEventArgs` | 事件参数实例。 |
-
-</div>
-
-**返回值**
-
-<div class="api-returns-table" markdown="1">
-
-| 类型 | 说明 |
-| :--- | :--- |
-| `string` | 事件类型的 AssemblyQualifiedName。 |
-
-</div>
-
-### GetEventBindingKey() {#method-geteventbindingkey}
-
-获取事件类型的绑定键（事件类型的 AssemblyQualifiedName）。 按事件类型缓存，同类型重复发布复用同一字符串实例（热路径零分配）。
-
-``` csharp
-public static string GetEventBindingKey<TEventArgs>()
-```
-
-**返回值**
-
-<div class="api-returns-table" markdown="1">
-
-| 类型 | 说明 |
-| :--- | :--- |
-| `string` | 事件类型的 AssemblyQualifiedName。 |
-
-</div>
-
-### GetEventName() {#method-geteventname}
-
-获取事件类型的简短名称。
-
-``` csharp
-public static string GetEventName<TEventArgs>()
-```
-
-**返回值**
-
-<div class="api-returns-table" markdown="1">
-
-| 类型 | 说明 |
-| :--- | :--- |
-| `string` | 事件类型的 Type.Name。 |
 
 </div>
 

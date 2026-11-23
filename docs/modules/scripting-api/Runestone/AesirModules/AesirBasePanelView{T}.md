@@ -13,7 +13,7 @@ description: "Runestone.AesirModules.AesirBasePanelView<T> 的 API 文档"
 
 **继承链:** `System.Object` → `UnityEngine.Object` → `UnityEngine.Component` → `UnityEngine.Behaviour` → `UnityEngine.MonoBehaviour` → `Sirenix.OdinInspector.SerializedMonoBehaviour` → `Runestone.AesirArchitecture.AesirMonoBehaviour` → `Runestone.AesirModules.AesirBasePanel` → `AesirBasePanelView<T>`
 
-**实现接口:** `Sirenix.Serialization.ISupportsPrefabSerialization`，`Runestone.AesirArchitecture.IContextHolder`，`UnityEngine.ISerializationCallbackReceiver`，`Runestone.AesirArchitecture.IView`，`Runestone.AesirArchitecture.ICanGetModel`，`Runestone.AesirModules.IUIPanel`，`Runestone.AesirArchitecture.ICanGetService`
+**实现接口:** `Sirenix.Serialization.ISupportsPrefabSerialization`，`Runestone.AesirModules.IUIPanel`，`Runestone.AesirArchitecture.IContextHolder`，`UnityEngine.ISerializationCallbackReceiver`，`Runestone.AesirArchitecture.IView`，`Runestone.AesirArchitecture.ICanGetModel`，`Runestone.AesirArchitecture.ICanGetService`
 
 **类型参数**
 
@@ -24,11 +24,11 @@ description: "Runestone.AesirModules.AesirBasePanelView<T> 的 API 文档"
 ``` csharp
 public abstract class AesirBasePanelView<T> : Runestone.AesirModules.AesirBasePanel, 
 Sirenix.Serialization.ISupportsPrefabSerialization, 
+Runestone.AesirModules.IUIPanel, 
 Runestone.AesirArchitecture.IContextHolder, 
 UnityEngine.ISerializationCallbackReceiver, 
 Runestone.AesirArchitecture.IView, 
 Runestone.AesirArchitecture.ICanGetModel, 
-Runestone.AesirModules.IUIPanel, 
 Runestone.AesirArchitecture.ICanGetService where T : new(), Runestone.AesirArchitecture.AbstractContext<T>
 ```
 

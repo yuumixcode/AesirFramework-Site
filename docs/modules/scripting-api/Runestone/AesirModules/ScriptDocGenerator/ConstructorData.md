@@ -13,16 +13,16 @@ description: "Runestone.AesirModules.ScriptDocGenerator.ConstructorData 的 API 
 
 **继承链:** `System.Object` → `Runestone.AesirModules.ScriptDocGenerator.MemberData` → `ConstructorData`
 
-**实现接口:** `Runestone.AesirModules.ScriptDocGenerator.IConstructorData`，`Runestone.AesirModules.ScriptDocGenerator.IDerivedMemberData`，`Runestone.AesirModules.ScriptDocGenerator.IMemberData`
+**实现接口:** `Runestone.AesirModules.ScriptDocGenerator.IDerivedMemberData`，`Runestone.AesirModules.ScriptDocGenerator.IMemberData`，`Runestone.AesirModules.ScriptDocGenerator.IConstructorData`
 
 ## 声明
 
 ``` csharp
 [Serializable]
 public class ConstructorData : Runestone.AesirModules.ScriptDocGenerator.MemberData, 
-Runestone.AesirModules.ScriptDocGenerator.IConstructorData, 
 Runestone.AesirModules.ScriptDocGenerator.IDerivedMemberData, 
-Runestone.AesirModules.ScriptDocGenerator.IMemberData
+Runestone.AesirModules.ScriptDocGenerator.IMemberData, 
+Runestone.AesirModules.ScriptDocGenerator.IConstructorData
 ```
 
 构造方法解析数据

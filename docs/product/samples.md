@@ -64,13 +64,15 @@ description: "AesirFramework 两包共 11 个可导入示例:计数器六档对�
 - RAA 版(`Scripts/Raa/`)规划中,用于对照"同一款游戏在架构版下的写法"
 - 素材自包含:精灵来自 [Vertical 2D Shooting BE4](https://www.goldmetal.co.kr)(Copyright ⓒ 2021 Goldmetal;标注 Goldmetal 出处即可自由使用,含商用),案例内为自包含拷贝
 
-## Aesir Modules(5 个)
+## Aesir Modules(7 个)
 
 | 示例 | 场景 | 演示内容 |
 | --- | --- | --- |
-| **Event · Key Press** | — | 事件模块最小闭环:按键发布事件 + `[AesirListener]` 静态订阅 |
+| **Event · Key Press** | — | 事件模块最小闭环:按键发布事件 + Script 订阅、句柄退订 |
 | **Event · Filters** | `SampleForEventFilters` | 订阅者过滤器对照:`WithTag("Player")` + `InsideCollider2D` 双重过滤,`OnlySelf` 家族命令;场景内置圈内 / 圈外 / 无标签多组对照组与 HUD 日志 |
 | **Event · SO Asset** | `SampleForEventSOAsset` | SO 资产化:`ScoreEventAsset` 发布 + `UnityEventOnAesirEvent` 桥接组件零代码串联 UnityEvent 回调,同时演示代码订阅的双消费方式 |
+| **Event · Cancellation** | `SampleForCancellation` | 取消传播:四档优先级订阅同一伤害事件,Space 观察执行链,Shift 对照不可取消事件 |
+| **Event · Diagnostics** | `SampleForDiagnostics` | 诊断 API:订阅 `TraceProduced` 实时展示事件链路快照 |
 | **Audio · Basic Usage** | `SampleForAudioBasic` | SFX 轮询播放、BGM 淡入淡出切换、三通道音量 / 静音持久化(OnGUI 面板驱动) |
 | **UI · Basic Usage** | `SampleForUIBasic` | 面板与 Canvas 根窗口两种形态协作:Normal 层控制面板 + Top 层日志 HUD、设置 / 叠加窗口的蒙版单遮与叠遮对照、全屏加载窗口 |
 

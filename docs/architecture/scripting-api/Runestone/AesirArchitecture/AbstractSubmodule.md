@@ -90,6 +90,7 @@ public bool Initialized { get; private set; }
 **备注**
 
 先调用 OnDispose 执行子类清理逻辑，随后断开上下文引用并将 Initialized 重置为 false（重置语义见该属性说明）。
+幂等：重复调用直接早退，OnDispose 只执行一次——与 AbstractContext.Dispose 的释放守卫同构，避免框架生命周期释放与手动释放叠加时重复取消订阅 / 重复释放资源。
 
 ``` csharp
 public void Dispose()

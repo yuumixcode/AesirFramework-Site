@@ -11,11 +11,31 @@
 
 | 子包 | 包名 | 版本 |
 |------|------|------|
-| Aesir Architecture | `cn.runestone.aesir.architecture` | **0.34.1** |
-| Aesir Modules | `cn.runestone.aesir.modules` | **0.34.1** |
+| Aesir Architecture | `cn.runestone.aesir.architecture` | **0.35.0** |
+| Aesir Modules | `cn.runestone.aesir.modules` | **0.35.0** |
 
 !!! tip "版本策略"
     两包同号发版(CI 校验一致),推荐同版本安装。Aesir Modules 依赖 Aesir Architecture;Aesir Architecture 不依赖任何 Aesir 子包。
+
+## [0.35.0] - 2026-11-23
+
+**事件模块大版本(含破坏性变更)**:补齐"能拦、能看、能测"三块可观测性能力,分发热路径做到零排序、零间接层、零冗余解析;移除 `[AesirListener]` 特性反射订阅,只保留 Script 订阅。
+
+**Aesir Modules**
+
+- **取消传播**:`AesirEventArgs.Cancel(canceller)` 中止本次分发,`First`/`Last` 两档始终执行(前置校验/收尾清理),`NonCancellable()` 免疫取消;用于输入吞噬、伤害减免链、互斥 UI 抢先响应
+- **公开诊断 API `AesirEventDiagnostics`**:订阅树查询 + 环形缓冲链路快照,运行时零 Odin 依赖、关闭时分发热路径零分配;未装 Odin 也能据此自建监视面板
+- **三个调试窗口**:`Tools/Aesir/Modules/Event Monitor | Event Log | Event Tester`(UI Toolkit 版 + Odin 版信息等价,菜单自动路由)
+- **分发性能与结构精简(功能面不变)**:注册表改 Type 键 + 注册期有序插入(分发零排序)、去 `object[]` 间接层、非泛型订阅去反射、重入缓冲按深度复用、空间过滤器每趟缓存
+- **【破坏性】移除 `[AesirListener]` 特性反射订阅**:`AddListener<T>(this, callback)` + 句柄 `Dispose()` 退订;新增 `RemoveListener<T>(object)` 精确无句柄退订;迁移表见包内 `Documentation~/event-module.md`
+- **【破坏性】同一参数实例重入发布改 fail-fast 拒绝**:跨实例事件链不受影响;事件链请用新参数实例或经 `AesirTimer.NextFrame` 延后发布
+- **【破坏性】低频公开 API 收窄**:删除 `Clone()`/`ICloneable`、字符串绑定键;`BindingInfo` 转 internal
+- **SDG 修复**:开放泛型成员默认值读取不再崩溃、不再阻断整程序集文档生成
+- **新增示例**:`04_Cancellation`(取消传播四档执行链)/ `05_Diagnostics`(纯公开 API 消费诊断数据)
+
+**Aesir Architecture**
+
+- 代码格式化与 XML 注释排版统一(无运行时行为变更),版本号同步至 0.35.0
 
 ## [0.34.1] - 2026-11-20
 

@@ -13,15 +13,15 @@ description: "Runestone.AesirModules.AesirBasePanel 的 API 文档"
 
 **继承链:** `System.Object` → `UnityEngine.Object` → `UnityEngine.Component` → `UnityEngine.Behaviour` → `UnityEngine.MonoBehaviour` → `Sirenix.OdinInspector.SerializedMonoBehaviour` → `Runestone.AesirArchitecture.AesirMonoBehaviour` → `AesirBasePanel`
 
-**实现接口:** `Sirenix.Serialization.ISupportsPrefabSerialization`，`UnityEngine.ISerializationCallbackReceiver`，`Runestone.AesirModules.IUIPanel`
+**实现接口:** `Sirenix.Serialization.ISupportsPrefabSerialization`，`Runestone.AesirModules.IUIPanel`，`UnityEngine.ISerializationCallbackReceiver`
 
 ## 声明
 
 ``` csharp
 public abstract class AesirBasePanel : Runestone.AesirArchitecture.AesirMonoBehaviour, 
 Sirenix.Serialization.ISupportsPrefabSerialization, 
-UnityEngine.ISerializationCallbackReceiver, 
-Runestone.AesirModules.IUIPanel
+Runestone.AesirModules.IUIPanel, 
+UnityEngine.ISerializationCallbackReceiver
 ```
 
 UI 面板基类。子类覆写生命周期虚方法，通过 Context 访问 Model/Service。

@@ -90,13 +90,13 @@ public ObservableValue<T>(T initialValue)
 ### InvokeMethodName {#field-invokemethodname}
 
 ``` csharp
-public const string InvokeMethodName = "InvokeEvent";
+public const string InvokeMethodName;
 ```
 
 ### PrivateValueFieldName {#field-privatevaluefieldname}
 
 ``` csharp
-public const string PrivateValueFieldName = "value";
+public const string PrivateValueFieldName;
 ```
 
 ## 属性
@@ -116,6 +116,7 @@ public const string PrivateValueFieldName = "value";
 **备注**
 
 使用 EqualityComparer{T}.Default 判断值是否变化，仅在变化时触发 MiniEvent{T}.Invoke。
+性能注记：EqualityComparer<T>.Default 对未实现 IEquatable{T} 的值类型会回退到装箱比较（每次 set 装箱旧/新值）。热点路径上的自定义结构体建议实现 IEquatable<T> 消除装箱；基元类型（int / float / bool 等）已内置实现，无此开销。
 
 ``` csharp
 public T Value { get; set; }

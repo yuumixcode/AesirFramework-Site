@@ -26,7 +26,7 @@ UI 模块全局配置（单例资产）。承载无需预放置 [UIModule] 即�
 
 **备注**
 
-单例 Instance 的解析顺序： RegisterConfigLoader 注册的加载器——注册后 Resources 兜底不再执行， 用于彻底放弃 Resources 的项目（如 Addressables 或代码内构造配置）； Resources 兜底（ResourcePath，编辑器在编辑模式域加载时自动创建该资产， 见编辑器程序集 UIModuleConfigAssetInitializer）； 内存默认实例——前两级均未命中时以代码默认值创建，仅存在于内存、不持久化。 运行时经 MaskMode 的切换只覆盖 UIModule 的内存值，不改写本资产。
+单例 Instance 的解析顺序： RegisterConfigLoader 注册的加载器——注册后 Resources 兜底不再执行， 用于彻底放弃 Resources 的项目（如 Addressables 或代码内构造配置）； Resources 兜底（ResourcePath）；可在 Project 窗口自建资产，或经菜单 Tools/Aesir/Modules/Create Module Config Assets 显式创建（包导入时不写用户工程）； 内存默认实例——前两级均未命中时以代码默认值创建，仅存在于内存、不持久化。 运行时经 MaskMode 的切换只覆盖 UIModule 的内存值，不改写本资产。
 
 ## 构造方法
 

@@ -13,15 +13,15 @@ description: "Runestone.AesirModules.AesirBaseWindow 的 API 文档"
 
 **继承链:** `System.Object` → `UnityEngine.Object` → `UnityEngine.Component` → `UnityEngine.Behaviour` → `UnityEngine.MonoBehaviour` → `Sirenix.OdinInspector.SerializedMonoBehaviour` → `Runestone.AesirArchitecture.AesirMonoBehaviour` → `AesirBaseWindow`
 
-**实现接口:** `Sirenix.Serialization.ISupportsPrefabSerialization`，`UnityEngine.ISerializationCallbackReceiver`，`Runestone.AesirModules.IUIWindow`
+**实现接口:** `Sirenix.Serialization.ISupportsPrefabSerialization`，`Runestone.AesirModules.IUIWindow`，`UnityEngine.ISerializationCallbackReceiver`
 
 ## 声明
 
 ``` csharp
 public abstract class AesirBaseWindow : Runestone.AesirArchitecture.AesirMonoBehaviour, 
 Sirenix.Serialization.ISupportsPrefabSerialization, 
-UnityEngine.ISerializationCallbackReceiver, 
-Runestone.AesirModules.IUIWindow
+Runestone.AesirModules.IUIWindow, 
+UnityEngine.ISerializationCallbackReceiver
 ```
 
 Canvas 根 UI 窗口基类。窗口预制体根节点自带 Canvas（独立渲染根）， 由 UIModule 实例化后直接挂载到 UIRoot 下，按 SortingOrder 排序， 默认恒在全部面板层之上。子类覆写生命周期虚方法，通过 Context 访问 Model/Service。

@@ -19,11 +19,11 @@ description: "Runestone.AesirModules.Editor.AesirSingletonAssetInitializer 的 A
 internal static class AesirSingletonAssetInitializer
 ```
 
-模块配置资产（单例 ScriptableObject）的自动创建共用实现。
+模块配置资产（单例 ScriptableObject）的显式创建共用实现。
 
 **备注**
 
-各模块的 XxxModuleConfigAssetInitializer 负责在 [InitializeOnLoadMethod] 里注册 EditorApplication.delayCall（域加载期 AssetDatabase 未就绪，此刻 CreateAsset 会报 "Unable to import newly created asset"），实际创建推迟到编辑器空闲首帧并由本类执行—— UI / Scene 两个配置资产此前各持一份等价实现，此处收敛为单一真源。
+由菜单 Tools/Aesir/Modules/Create Module Config Assets 显式调用，经各模块的 XxxModuleConfigAssetInitializer 转入本类——包导入时不写用户工程。 UI / Scene 两个配置资产此前各持一份等价实现，此处收敛为单一真源。
 
 ## 方法
 

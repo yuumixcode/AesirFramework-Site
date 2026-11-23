@@ -92,9 +92,11 @@ Package Manager → Aesir Modules → **Samples**:
 
 | 示例 | 说明 |
 |------|------|
-| `Events/01_KeyPress` | 事件模块基本发布-订阅:按键发布事件、`[AesirListener]` 静态订阅 |
+| `Events/01_KeyPress` | 事件模块基本发布-订阅:按键发布事件、Script 订阅与句柄退订 |
 | `Events/02_Filters` | 订阅者过滤器对照示例:`WithTag`+`InsideCollider2D` 双重过滤与 `OnlySelf` 家族命令 |
 | `Events/03_SOAsset` | SO 资产化:事件资产配置载荷,`UnityEventOnAesirEvent` 零代码桥接 UnityEvent 回调 |
+| `Events/04_Cancellation` | 取消传播:四档优先级订阅同一伤害事件,Space 观察执行链,Shift 对照不可取消事件 |
+| `Events/05_Diagnostics` | 诊断 API:订阅 `TraceProduced` 实时展示事件链路快照 |
 | `Audio/01_BasicUsage` | 音频模块基础用法:SFX 播放、BGM 淡入淡出切歌、三通道音量与静音持久化 |
 | `UI/01_BasicUsage` | UI 模块基础用法:面板与 Canvas 根窗口协作、蒙版单遮/叠遮切换对照、点击蒙版关闭、全屏加载窗口 |
 

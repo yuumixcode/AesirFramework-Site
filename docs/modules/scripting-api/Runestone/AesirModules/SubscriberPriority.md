@@ -25,7 +25,7 @@ System.IConvertible
 ```
 
 事件订阅者优先级。4 档排序：First → High → Medium → Last。
-High 为 Attribute 订阅（[AesirListener]）默认值，Medium 为 Script 订阅（AddListener<T>）默认值。 First / Last 用于自定义特定方法的触发时机（最前/最后）。
+Medium 为 Script 订阅（AddListener<T>）默认值；High 需显式指定。 First / Last 用于前置校验与收尾清理——这两档不受 Cancel 取消传播影响。
 
 ## 字段
 
@@ -33,8 +33,8 @@ High 为 Attribute 订阅（[AesirListener]）默认值，Medium 为 Script 订�
 
 | 名称 | 描述 |
 | :--- | :--- |
-| [`First`](#field-first) | 前。比所有默认档位更早执行，用于需要在常规处理前运行的逻辑。 |
-| [`High`](#field-high) | 高优先级。Attribute 订阅 [AesirListener] 默认值。 |
+| [`First`](#field-first) | 前。比所有默认档位更早执行；不受取消传播影响，用于前置校验。 |
+| [`High`](#field-high) | 高优先级。需显式指定。 |
 | [`Last`](#field-last) | — |
 | [`Medium`](#field-medium) | 中优先级。Script 订阅 AddListener<T> 默认值。 |
 
@@ -42,7 +42,7 @@ High 为 Attribute 订阅（[AesirListener]）默认值，Medium 为 Script 订�
 
 ### First {#field-first}
 
-前。比所有默认档位更早执行，用于需要在常规处理前运行的逻辑。
+前。比所有默认档位更早执行；不受取消传播影响，用于前置校验。
 
 ``` csharp
 public const SubscriberPriority First;
@@ -50,7 +50,7 @@ public const SubscriberPriority First;
 
 ### High {#field-high}
 
-高优先级。Attribute 订阅 [AesirListener] 默认值。
+高优先级。需显式指定。
 
 ``` csharp
 public const SubscriberPriority High;

@@ -19,11 +19,11 @@ description: "Runestone.AesirModules.Editor.SceneModuleSettingsWindow 的 API �
 public class SceneModuleSettingsWindow : UnityEditor.EditorWindow
 ```
 
-Scene 模块设置窗口（原生 IMGUI 兜底）：展示并编辑 SceneEditorSettings 单例。
+Scene 模块设置窗口（UI Toolkit 版）：展示并编辑 SceneEditorSettings 单例。
 
 **备注**
 
-双窗口模式的兜底侧（与包内更新器同款模式）：安装 Odin Inspector 时，本窗口持有的菜单项经 OdinWindowOpener 静态委托路由到 SceneModuleSettingsWindowOdin （Odin 程序集在域加载期注册打开方式）；未安装 Odin 时菜单直接打开本窗口——展示的信息量与 Odin 版等价（四个设置字段 + 手动搜集按钮）。数据层 SceneEditorSettings 为两窗口共用的单一真源，写入即时 Save 落盘。
+安装 Odin Inspector 且样式开关 UseOdin 为 true 时， 菜单经 OdinWindowOpener 路由到 Odin 版窗口；否则打开本 UI Toolkit 窗口。 两版信息量等价（四个设置字段 + 手动搜集按钮），数据层 SceneEditorSettings 为单一真源，写入即时 Save 落盘。
 
 ## 构造方法
 
@@ -49,7 +49,7 @@ public SceneModuleSettingsWindow()
 
 | 名称 | 描述 |
 | :--- | :--- |
-| [`OdinWindowOpener`](#property-odinwindowopener) | Odin 版窗口的打开委托（由 Odin 程序集经 [InitializeOnLoadMethod] 注册； 未安装 Odin Inspector 时为 null，菜单打开本原生兜底窗口）。 |
+| [`OdinWindowOpener`](#property-odinwindowopener) | Odin 版窗口的打开委托（Odin 程序集注册；关闭 Odin 样式时为 null）。 |
 
 </div>
 
@@ -85,7 +85,7 @@ public SceneModuleSettingsWindow()
 
 ### OdinWindowOpener {#property-odinwindowopener}
 
-Odin 版窗口的打开委托（由 Odin 程序集经 [InitializeOnLoadMethod] 注册； 未安装 Odin Inspector 时为 null，菜单打开本原生兜底窗口）。
+Odin 版窗口的打开委托（Odin 程序集注册；关闭 Odin 样式时为 null）。
 
 ``` csharp
 public static Action OdinWindowOpener { get; private set; }

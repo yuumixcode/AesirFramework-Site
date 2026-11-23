@@ -84,7 +84,7 @@ Model 持有可写实例,View 通过 `IReadOnlyObservableValue<T>` 订阅。`Add
 | --- | --- | --- | --- |
 | 分层架构 | Context、Model / Service、Command / Query、View / Controller / Presenter、六档渐进 | — | [架构概念](../architecture/concepts.md) |
 | 数据驱动 UI | `ObservableValue`、可观察集合(List / Dictionary / HashSet) | — | [响应式与事件](../architecture/observable.md) |
-| 事件 | `MiniEvent` / `MiniEvent<T>` | `EventModule`:Attribute + Script 双轨、4 档优先级、订阅者过滤器、SO 资产化 | [事件模块](../modules/events.md) |
+| 事件 | `MiniEvent` / `MiniEvent<T>` | `EventModule`:Script 订阅、4 档优先级、订阅者过滤器、取消传播、SO 资产化、公开诊断 API | [事件模块](../modules/events.md) |
 | UI | — | `UIRoot` 四层 Canvas、`UIModule` 面板生命周期、Canvas 根窗口、Binder 组件绑定 | [UI 框架](../modules/ui.md) |
 | 场景 | — | `SceneModule` 加载 / 叠加 / 卸载、`SceneAssetWrapper`、协程与 UniTask 双驱动 | [场景模块](../modules/scene.md) |
 | 音频 | — | SFX 独占音源轮询、BGM 淡入淡出、三通道音量持久化 | [音频模块](../modules/audio.md) |

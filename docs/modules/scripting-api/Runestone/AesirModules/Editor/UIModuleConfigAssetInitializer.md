@@ -19,11 +19,11 @@ description: "Runestone.AesirModules.Editor.UIModuleConfigAssetInitializer 的 A
 internal static class UIModuleConfigAssetInitializer
 ```
 
-确保 UI 模块配置资产存在：编辑模式域加载后，Resources 兜底路径缺失且项目中无同类型资产时， 自动创建 UIModuleConfigSO 至 Assets/Resources/UIModuleConfig/， 免去用户手动创建资产的前置步骤（配置调整不依赖预放置 [UIModule]）。
+UI 模块配置资产的显式创建入口：在 Resources 兜底路径缺失且项目中无同类型资产时， 创建 UIModuleConfigSO 至 Assets/Resources/UIModuleConfig/UIModuleConfig.asset。
 
 **备注**
 
-创建逻辑与 Scene 模块共用 AesirSingletonAssetInitializer（单一真源）。
+包导入时不自动创建——第三方包不应在导入瞬间写入用户工程。由菜单 Tools/Aesir/Modules/Create Module Config Assets 显式调用；未创建时运行时以内存默认配置兜底。 创建逻辑与 Scene 模块共用 AesirSingletonAssetInitializer（单一真源）。
 
 ## 方法
 

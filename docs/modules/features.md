@@ -44,7 +44,7 @@
 
 ## 事件模块
 
-双轨订阅事件系统:`[AesirListener]` 特性静态订阅 + `AddListener<T>` 动态 Lambda 订阅,共存于同一分发流程,按 4 档优先级(First / High / Medium / Last)稳定排序执行(同档按注册顺序);分发基于注册表快照迭代并支持重入发布(回调内可安全同步发布事件)。静态绑定经**表达式树编译委托**优化反射开销(分发热路径零反射、零字符串分配、零装箱)。内置**订阅者过滤器**(精确投递)、**死引用自动清理**与可选**分发耗时告警**;支持 **SO 资产化**(`AesirEventArgsSO` + `UnityEventOnAesirEvent` 桥接),非程序员可在 Inspector 配置事件。详见[事件模块](events.md)。
+Script 订阅事件系统:`AddListener<T>` 注册委托、返回 `AutoRemoveListenerHandle` 精确退订(唯一订阅形态),按 4 档优先级(First / High / Medium / Last)稳定执行(同档按注册顺序;注册期有序插入,分发零排序);分发基于注册表快照迭代,跨实例重入安全(同一参数实例的重入发布被拒绝)。**热路径零反射、零排序、零字符串分配、零装箱**。内置**订阅者过滤器**(精确投递)、**取消传播**、**死引用自动清理**与可选**分发耗时告警**;支持 **SO 资产化**(`AesirEventArgsSO` + `UnityEventOnAesirEvent` 桥接),非程序员可在 Inspector 配置事件;可观测性由公开门面 `AesirEventDiagnostics` + 三个调试窗口提供。详见[事件模块](events.md)。
 
 ```csharp
 // 1. 定义事件参数(数据载体)
@@ -54,25 +54,15 @@ public class OnPlayerScored : AesirEventArgs
     public string playerName;
 }
 
-// 2. Attribute 订阅
-public class ScoreUI : MonoBehaviour
-{
-    void OnEnable()  => EventModule.AddListener(this);
-    void OnDisable() => EventModule.RemoveListener(this);
-
-    [AesirListener]
-    private void OnPlayerScored(OnPlayerScored e) { /* ... */ }
-}
-
-// 3. Script 订阅(返回 AutoRemoveListenerHandle)
+// 2. Script 订阅(返回 AutoRemoveListenerHandle,OnDisable 中 Dispose)
 _handle = EventModule.AddListener<OnPlayerScored>(this, e => Debug.Log(e.points));
 _handle.Dispose();
 
-// 4. 发布
+// 3. 发布
 new OnPlayerScored { points = 10, playerName = "Player1" }.Invoke(this);
 ```
 
-核心类型:`AesirEventArgs`(参数基类,支持 `WithFilter` 链式过滤器)、`AesirListenerAttribute`(AllowMultiple)、`EventModule`(单例)、`ISubscriberFilter`(过滤器策略接口)、`AesirEventArgsSO` / `UnityEventOnAesirEvent`(SO 资产化)、`BindingInfo` 家族、`SubscriberPriority`。
+核心类型:`AesirEventArgs`(参数基类,支持 `WithFilter` 链式过滤器与 `Cancel` 取消传播)、`EventModule`(单例)、`ISubscriberFilter`(过滤器策略接口)、`AesirEventArgsSO` / `UnityEventOnAesirEvent`(SO 资产化)、`SubscriberPriority`、`AesirEventDiagnostics`(诊断公开门面)。
 
 ```csharp
 // 订阅者过滤器:只有 Tag 为 "Enemy" 且在爆炸范围内的订阅者收到

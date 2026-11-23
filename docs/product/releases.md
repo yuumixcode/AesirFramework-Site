@@ -8,8 +8,8 @@ description: "AesirFramework 当前版本、版本策略、发布产物与更新
 
 | 包 | 包名 | 版本 | 发布 |
 | --- | --- | --- | --- |
-| Aesir Architecture | `cn.runestone.aesir.architecture` | **0.34.1** | 2026-11-20 |
-| Aesir Modules | `cn.runestone.aesir.modules` | **0.34.1** | 2026-11-20 |
+| Aesir Architecture | `cn.runestone.aesir.architecture` | **0.35.0** | 2026-11-23 |
+| Aesir Modules | `cn.runestone.aesir.modules` | **0.35.0** | 2026-11-23 |
 
 两包**同号发版**(CI 校验一致),推荐始终安装同版本。完整变更见[更新日志](../changelog.md)。
 
@@ -17,7 +17,7 @@ description: "AesirFramework 当前版本、版本策略、发布产物与更新
 
 - 版本号遵循[语义化版本](https://semver.org/lang/zh-CN/),变更记录遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)
 - `0.x` 阶段:破坏性 API 变更会在 CHANGELOG 的 **Changed / Removed** 段明确标注,来龙去脉写在提交说明与内部笔记仓的过程记录里(包内不保留设计变更记录)
-- 只有 tag 永久保留。版本分支随发版轮换,钉住旧版本请用 tag 而不是分支名
+- 版本 tag 一旦发布即不可变、永久保留;版本号 bump 后的首次推送才创建新 tag。钉住旧版本请用 tag 而不是分支名
 
 ## 获取方式
 

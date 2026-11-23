@@ -9,7 +9,7 @@ description: "Runestone.AesirModules 系列命名空间的 Scripting API 参考"
 
 ## Runestone.AesirModules
 
-命名空间 `Runestone.AesirModules` · 程序集 `Runestone.AesirModules`、`Runestone.AesirModules.Editor.OdinInspector`、`Runestone.AesirModules.OdinInspector`、`Runestone.AesirModules.UniTask` · 共 67 个类型。
+命名空间 `Runestone.AesirModules` · 程序集 `Runestone.AesirModules`、`Runestone.AesirModules.Editor.OdinInspector`、`Runestone.AesirModules.OdinInspector`、`Runestone.AesirModules.UniTask` · 共 70 个类型。
 
 ### 类
 
@@ -26,8 +26,8 @@ description: "Runestone.AesirModules 系列命名空间的 Scripting API 参考"
 | [`AesirBaseWindowViewController<T>`](<Runestone/AesirModules/AesirBaseWindowViewController{T}.md>) | 窗口视图控制器基类（MVC 模式的 Controller 层兼 View 职责，Canvas 根窗口形态）。 泛型参数 T 指定窗口关联的 Context 类型， Contex… |
 | [`AesirEventArgs`](<Runestone/AesirModules/AesirEventArgs.md>) | 事件参数基类。所有自定义事件参数继承此类，作为事件数据载体在 EventModule 中传递。 注意：AesirEventArgs 本身不持有监听者，仅作为参数实例。 订阅管理… |
 | [`AesirEventArgsSO`](<Runestone/AesirModules/AesirEventArgsSO.md>) | AesirEventArgs 的 ScriptableObject 包装，让事件可保存为 .asset 资源， 在 Inspector 中配置载荷并由非程序员触发。 通过 Pr… |
-| [`AesirEventUtility`](<Runestone/AesirModules/AesirEventUtility.md>) | 事件模块静态工具方法。 |
-| [`AesirListenerAttribute`](<Runestone/AesirModules/AesirListenerAttribute.md>) | 事件订阅者特性。标记在方法上，表示该方法监听指定类型的 AesirEventArgs。 用法示例： [AesirListener] private void OnKeyPres… |
+| [`AesirEventDiagnostics`](<Runestone/AesirModules/AesirEventDiagnostics.md>) | 事件模块诊断门面：对外暴露运行时订阅状态查询与事件链路推送，全部为公开 API。 设计定位：数据层与视图层解耦的唯一契约。本类只依赖运行时类型，不引用任何编辑器或 Odin 代… |
+| [`AesirEventUtility`](<Runestone/AesirModules/AesirEventUtility.md>) | 事件模块静态工具方法：Unity null 检测与 GameObject 解析， 供订阅者过滤器与诊断门面解析发布者/订阅者。 |
 | [`AesirModules`](<Runestone/AesirModules/AesirModules.md>) | Aesir Modules 接入 MonoBehaviour 生命周期的持久化物体对象。 |
 | [`AesirModulesDebug`](<Runestone/AesirModules/AesirModulesDebug.md>) | — |
 | [`AudioConfigSO`](<Runestone/AesirModules/AudioConfigSO.md>) | 音频模块配置资产。创建路径：Assets → Create → Aesir Modules → Audio → AudioConfig。 配置默认音量、音量持久化开关与 Pla… |
@@ -40,10 +40,9 @@ description: "Runestone.AesirModules 系列命名空间的 Scripting API 参考"
 | [`BinderInfo`](<Runestone/AesirModules/BinderInfo.md>) | 绑定单元数据。描述一条要绑定到生成脚本字段的组件引用信息。 在 BinderAssistant 的「绑定单元列表」中以表格形式配置， 由「构建绑定单元」按子物体上的 Binde… |
 | [`BinderMenuItems`](<Runestone/AesirModules/BinderMenuItems.md>) | Binder 层级右键菜单快捷入口: 为选中物体快速挂载 BinderAssistant 与 BinderTag， 免去 Add Component 菜单的层层查找。 |
 | [`BinderTag`](<Runestone/AesirModules/BinderTag.md>) | Binder 标签组件。挂载在需要自动绑定引用的子物体上，标记该物体可被 BinderAssistant 扫描并生成绑定信息。 一个物体上可绑定多个不同类型的组件，通过 Com… |
-| [`BindingInfo`](<Runestone/AesirModules/BindingInfo.md>) | 绑定信息基类。Attribute 订阅与 Script 订阅的共同部分。 |
-| [`DynamicBindingInfo<TEventArgs>`](<Runestone/AesirModules/DynamicBindingInfo{TEventArgs}.md>) | Script 订阅绑定信息。通过 Action{T} 委托直接调用，无需表达式树。 |
+| [`BindingInfo`](<Runestone/AesirModules/BindingInfo.md>) | 绑定信息基类：Script 订阅的公共部分（订阅者、优先级、事件类型与诊断成员名）。 internal 实现细节：订阅/退订必须经 EventModule 公开 API 走同一… |
 | [`EmptySceneAssetWrapperException`](<Runestone/AesirModules/EmptySceneAssetWrapperException.md>) | 访问了未分配任何场景的 SceneAssetWrapper。 |
-| [`EventModule`](<Runestone/AesirModules/EventModule.md>) | 事件模块（MonoBehaviour 单例）。 通过 [AesirListener] 特性实现 Attribute 订阅，通过 AddListener{TEventArgs}(… |
+| [`EventModule`](<Runestone/AesirModules/EventModule.md>) | 事件模块（MonoBehaviour 单例）。 通过 AddListener{TEventArgs}(object, Action{TEventArgs}) 建立 Script… |
 | [`ExcludeSubclassSelectorAttribute`](<Runestone/AesirModules/ExcludeSubclassSelectorAttribute.md>) | 排除特性。标记不想出现在 SubclassSelectorAttribute 下拉中的类型 （如抽象中间层、仅供程序内部使用的事件参数）。 |
 | [`InsideCollider2D`](<Runestone/AesirModules/InsideCollider2D.md>) | 仅投递给位于发布者 Collider2D 范围内的订阅者。用于空间局域广播（如爆炸半径）， 订阅者位置取其 Transform.position。发布者挂多个 Collider… |
 | [`OnlySelf`](<Runestone/AesirModules/OnlySelf.md>) | 仅投递给发布者自身、其子树或其父级链上的订阅者。用于"只影响自己和亲属"的局域事件 （如组件通知所在层级，不波及场景中其他对象）。 |
@@ -57,7 +56,7 @@ description: "Runestone.AesirModules 系列命名空间的 Scripting API 参考"
 | [`SceneModuleConfigSO`](<Runestone/AesirModules/SceneModuleConfigSO.md>) | 场景模块全局配置（单例资产）。承载无需预放置 [SceneModule] 即可调整的模块级配置： 在 Project 窗口直接编辑本资产即可生效，不再要求预放置 SceneMo… |
 | [`SceneModuleUniTask`](<Runestone/AesirModules/SceneModuleUniTask.md>) | SceneModule 的 UniTask 适配 API——游戏工程包含 UniTask 时（宏 AESIR_MODULES_UNITASK 自动维护）， 提供可 await … |
 | [`SceneNotAddressableException`](<Runestone/AesirModules/SceneNotAddressableException.md>) | 对非 Addressable 场景的 SceneAssetWrapper 访问了 Address。 |
-| [`StaticBindingInfo`](<Runestone/AesirModules/StaticBindingInfo.md>) | Attribute 订阅绑定信息。 在注册时（冷路径）通过表达式树将 MethodInfo 编译为 Action（object target, object[] args）委托… |
+| [`ScriptBindingInfo<TEventArgs>`](<Runestone/AesirModules/ScriptBindingInfo{TEventArgs}.md>) | Script 订阅绑定。持有 Action{T} 委托，注册后直接调用—— 无反射、无表达式树、无参数数组，分发热路径只是一次虚调用加一次委托调用。 |
 | [`SubclassSelectorAttribute`](<Runestone/AesirModules/SubclassSelectorAttribute.md>) | 标记 [SerializeReference] 字段在 Inspector 中使用子类下拉选择器。 点击下拉按钮弹出字段声明类型的全部可选子类（按命名空间分组）， 选择后自动创… |
 | [`UICanvasConfigSO`](<Runestone/AesirModules/UICanvasConfigSO.md>) | UI Canvas 配置资产。创建路径：Assets → Create → Aesir Modules → UI → Default UICanvasConfig。 |
 | [`UIModule`](<Runestone/AesirModules/UIModule.md>) | UI 管理器（MonoBehaviour 单例）。 负责面板生命周期管理，UI 根节点构建委托给 UIRoot。 |
@@ -66,7 +65,7 @@ description: "Runestone.AesirModules 系列命名空间的 Scripting API 参考"
 | [`UnityEventOnAesirEvent`](<Runestone/AesirModules/UnityEventOnAesirEvent.md>) | UnityEvent 桥接组件。监听指定类型的 AesirEventArgs， 事件触发时调用 Inspector 中配置的 UnityEvent 回调， 供非程序员在 Ins… |
 | [`WithPriority`](<Runestone/AesirModules/WithPriority.md>) | 按优先级档位过滤。仅绑定在指定档位的订阅者收到事件， 用于"同一事件类型只通知某一档"的定向分发。 |
 | [`WithTag`](<Runestone/AesirModules/WithTag.md>) | 按 Unity Tag 过滤订阅者。仅 Tag 匹配的订阅者收到事件。 用法：new OnExplosion().WithFilter(new WithTag("Enemy")… |
-| [`WorldSpaceUICanvas`](<Runestone/AesirModules/WorldSpaceUICanvas.md>) | 世界空间 UI Canvas 预设组件。挂在场景物体（如角色头顶、交互点）上即可获得一个 WorldSpace 渲染根， UI 随该物体在世界空间中的位置移动… |
+| [`WorldSpaceUICanvas`](<Runestone/AesirModules/WorldSpaceUICanvas.md>) | 世界空间 UI Canvas 预设组件。挂在场景物体（如角色头顶、交互点）上即可获得一个 WorldSpace 渲染根，UI 随该物体在世界空间中的位置移动； 也可在运行时由 … |
 
 </div>
 
@@ -76,6 +75,9 @@ description: "Runestone.AesirModules 系列命名空间的 Scripting API 参考"
 
 | 名称 | 描述 |
 | :--- | :--- |
+| [`AesirEventSubscriptionSnapshot`](<Runestone/AesirModules/AesirEventSubscriptionSnapshot.md>) | 单个事件类型的订阅汇总快照（供监视面板展示"某事件有多少订阅者"）。 |
+| [`AesirEventTraceSnapshot`](<Runestone/AesirModules/AesirEventTraceSnapshot.md>) | 事件链路快照。诊断门面 AesirEventDiagnostics 推送与查询的最小不可变数据单元。 用 struct 存于固定容量环形缓冲，记录路径无托管分配；字段刻意保持精… |
+| [`AesirSubscriberSnapshot`](<Runestone/AesirModules/AesirSubscriberSnapshot.md>) | 单条订阅绑定快照（供监视面板展开订阅者列表）。 |
 | [`AudioChannel`](<Runestone/AesirModules/AudioChannel.md>) | 音频通道描述符（不可变值对象）。音量/静音的存取、PlayerPrefs 持久化与配置默认值载入 均以通道列表（Channels）为唯一数据源遍历。 |
 | [`BinderCodeGenerator.BindUnit`](<Runestone/AesirModules/BinderCodeGenerator.BindUnit.md>) | 单个绑定单元在代码生成阶段的只读描述。 HierarchyPath 为空字符串表示绑定 BinderAssistant 所在物体自身， 生成代码将直接调用 GetCompone… |
 | [`BinderCodeGenerator.CodeGenConfig`](<Runestone/AesirModules/BinderCodeGenerator.CodeGenConfig.md>) | 一次代码生成的完整配置。 |
@@ -103,20 +105,21 @@ description: "Runestone.AesirModules 系列命名空间的 Scripting API 参考"
 
 | 名称 | 描述 |
 | :--- | :--- |
+| [`AesirEventTraceKind`](<Runestone/AesirModules/AesirEventTraceKind.md>) | 事件链路快照的种类。 |
 | [`AesirModulesDebug.Tags`](<Runestone/AesirModules/AesirModulesDebug.Tags.md>) | — |
 | [`BinderScriptMode`](<Runestone/AesirModules/BinderScriptMode.md>) | Binder 脚本生成模式。 |
 | [`SceneAssetWrapperState`](<Runestone/AesirModules/SceneAssetWrapperState.md>) | SceneAssetWrapper 的可用状态。 Unsafe：引用不安全（空引用，或场景既不在 BuildSettings 也不可 Addressable） Regular：… |
 | [`SceneAssetWrapperUnsafeReason`](<Runestone/AesirModules/SceneAssetWrapperUnsafeReason.md>) | 描述 SceneAssetWrapper 不安全的具体原因。 |
-| [`SubscriberPriority`](<Runestone/AesirModules/SubscriberPriority.md>) | 事件订阅者优先级。4 档排序：First → High → Medium → Last。 High 为 Attribute 订阅（[AesirListener]）默认值，Med… |
+| [`SubscriberPriority`](<Runestone/AesirModules/SubscriberPriority.md>) | 事件订阅者优先级。4 档排序：First → High → Medium → Last。 Medium 为 Script 订阅（AddListener<T>）默认值；High … |
 | [`UILayer`](<Runestone/AesirModules/UILayer.md>) | UI 层级。Background < Normal < Popup < Top。 |
-| [`UIMaskMode`](<Runestone/AesirModules/UIMaskMode.md>) | 窗口蒙版调度模式，初始值配置于 UIModuleConfigSO（Resources 兜底资产， 编辑器自动创建），运行时可经 MaskMode 切换。 |
+| [`UIMaskMode`](<Runestone/AesirModules/UIMaskMode.md>) | 窗口蒙版调度模式，初始值配置于 UIModuleConfigSO（Resources 兜底资产， 可显式创建；缺资产时用内存默认配置），运行时可经 MaskMode 切换。 |
 | [`WorldSpaceUICanvas.WorldSpaceBillboardMode`](<Runestone/AesirModules/WorldSpaceUICanvas.WorldSpaceBillboardMode.md>) | 世界空间 UI 的朝向模式。 |
 
 </div>
 
 ## Runestone.AesirModules.Editor
 
-命名空间 `Runestone.AesirModules.Editor` · 程序集 `Runestone.AesirModules.Editor`、`Runestone.AesirModules.Editor.OdinInspector` · 共 12 个类型。
+命名空间 `Runestone.AesirModules.Editor` · 程序集 `Runestone.AesirModules.Editor`、`Runestone.AesirModules.Editor.OdinInspector` · 共 21 个类型。
 
 ### 类
 
@@ -125,16 +128,25 @@ description: "Runestone.AesirModules 系列命名空间的 Scripting API 参考"
 | 名称 | 描述 |
 | :--- | :--- |
 | [`AesirEventArgsSOEditor`](<Runestone/AesirModules/Editor/AesirEventArgsSOEditor.md>) | AesirEventArgsSO 自定义 Inspector： 运行模式（Play Mode）限定的事件触发按钮 + 事件参数配置字段。 |
-| [`AesirSingletonAssetInitializer`](<Runestone/AesirModules/Editor/AesirSingletonAssetInitializer.md>) | 模块配置资产（单例 ScriptableObject）的自动创建共用实现。 |
+| [`AesirEventLogWindow`](<Runestone/AesirModules/Editor/AesirEventLogWindow.md>) | 事件日志窗口（UI Toolkit 版）：实时展示事件链路快照（触发 / 绑定 / 解绑）。 只消费公开门面 AesirEventDiagnostics 的环形缓冲与 Trac… |
+| [`AesirEventLogWindowOdin`](<Runestone/AesirModules/Editor/AesirEventLogWindowOdin.md>) | 事件日志窗口（Odin 版）：用 Odin 表格展示公开门面 AesirEventDiagnostics 的链路快照。 经 OdinWindowOpener 静态委托路由打开；… |
+| [`AesirEventMonitorWindow`](<Runestone/AesirModules/Editor/AesirEventMonitorWindow.md>) | 事件监视窗口（UI Toolkit 版）：以只读方式展示"哪些事件当前有哪些订阅者"。 数据全部来自公开门面 AesirEventDiagnostics，本窗口无任何内部注册表… |
+| [`AesirEventMonitorWindowOdin`](<Runestone/AesirModules/Editor/AesirEventMonitorWindowOdin.md>) | 事件监视窗口（Odin 版）：用 Odin 表格展示公开 API AesirEventDiagnostics 提供的订阅快照。 经 OdinWindowOpener 静态委托由… |
+| [`AesirEventTesterWindow`](<Runestone/AesirModules/Editor/AesirEventTesterWindow.md>) | 事件测试窗口（UI Toolkit 版）：在编辑器中选择事件类型、配置载荷并手动触发， 用于不写触发代码即可复现事件、验证订阅链路。 触发经由公开 API Raise，发布者为… |
+| [`AesirEventTesterWindowOdin`](<Runestone/AesirModules/Editor/AesirEventTesterWindowOdin.md>) | 事件测试窗口（Odin 版）：以内联 Inspector 编辑临时事件资产并手动触发。 经 OdinWindowOpener 静态委托路由打开； 未安装 Odin 或关闭 Ae… |
+| [`AesirSingletonAssetInitializer`](<Runestone/AesirModules/Editor/AesirSingletonAssetInitializer.md>) | 模块配置资产（单例 ScriptableObject）的显式创建共用实现。 |
 | [`AesirUniTaskDefineKeeper`](<Runestone/AesirModules/Editor/AesirUniTaskDefineKeeper.md>) | 自动维护 AESIR_MODULES_UNITASK 脚本宏定义符号——SceneModule 的 UniTask 驱动分支与 UniTask 适配程序集（Runestone.… |
 | [`AudioModuleMenuItems`](<Runestone/AesirModules/Editor/AudioModuleMenuItems.md>) | 音频模块编辑器菜单项。提供在场景中预放置 AudioModule 的快捷入口。 |
 | [`BootstrapSceneHelper`](<Runestone/AesirModules/Editor/BootstrapSceneHelper.md>) | 启动场景帮助类，自动查找项目中的启动场景，并将其设置为第一个加载的场景 |
+| [`EventDiagnosticsWindowHelper`](<Runestone/AesirModules/Editor/EventDiagnosticsWindowHelper.md>) | 事件诊断窗口的 UI 构件helper。集中标题、行文本、空态等零散样式， 供三个 UI Toolkit 窗口复用，避免各自复制样式代码。 |
+| [`ModuleConfigAssetsMenuItem`](<Runestone/AesirModules/Editor/ModuleConfigAssetsMenuItem.md>) | 模块配置资产的一键初始化入口：显式在 Assets/Resources/ 下创建 UI / 场景两份配置 SO。 |
+| [`SceneAssetWrapperDrawer`](<Runestone/AesirModules/Editor/SceneAssetWrapperDrawer.md>) | SceneAssetWrapper 的属性绘制器 —— UI Toolkit 优先，IMGUI 兜底，零 Odin 依赖。 |
 | [`SceneEditorSettings`](<Runestone/AesirModules/Editor/SceneEditorSettings.md>) | Scene 模块编辑器设置（ScriptableSingleton）：Bootstrapper 场景搜集注册与启动流转的编辑器侧开关。 |
-| [`SceneModuleConfigAssetInitializer`](<Runestone/AesirModules/Editor/SceneModuleConfigAssetInitializer.md>) | 确保场景模块配置资产存在：编辑模式域加载后，Resources 兜底路径缺失且项目中无同类型资产时， 自动创建 SceneModuleConfigSO 至 Assets/Res… |
-| [`SceneModuleSettingsWindow`](<Runestone/AesirModules/Editor/SceneModuleSettingsWindow.md>) | Scene 模块设置窗口（原生 IMGUI 兜底）：展示并编辑 SceneEditorSettings 单例。 |
+| [`SceneModuleConfigAssetInitializer`](<Runestone/AesirModules/Editor/SceneModuleConfigAssetInitializer.md>) | 场景模块配置资产的显式创建入口：在 Resources 兜底路径缺失且项目中无同类型资产时， 创建 SceneModuleConfigSO 至 Assets/Resources… |
+| [`SceneModuleSettingsWindow`](<Runestone/AesirModules/Editor/SceneModuleSettingsWindow.md>) | Scene 模块设置窗口（UI Toolkit 版）：展示并编辑 SceneEditorSettings 单例。 |
 | [`SceneModuleSettingsWindowOdin`](<Runestone/AesirModules/Editor/SceneModuleSettingsWindowOdin.md>) | Scene 模块设置窗口（Odin 版）：InlineEditor 展示 SceneEditorSettings 单例。 |
 | [`SubclassSelectorDrawer`](<Runestone/AesirModules/Editor/SubclassSelectorDrawer.md>) | SubclassSelectorAttribute 的 UI Toolkit 属性绘制器。 为 [SerializeReference] 字段提供子类下拉选择： 点击按钮弹出字… |
-| [`UIModuleConfigAssetInitializer`](<Runestone/AesirModules/Editor/UIModuleConfigAssetInitializer.md>) | 确保 UI 模块配置资产存在：编辑模式域加载后，Resources 兜底路径缺失且项目中无同类型资产时， 自动创建 UIModuleConfigSO 至 Assets/Reso… |
+| [`UIModuleConfigAssetInitializer`](<Runestone/AesirModules/Editor/UIModuleConfigAssetInitializer.md>) | UI 模块配置资产的显式创建入口：在 Resources 兜底路径缺失且项目中无同类型资产时， 创建 UIModuleConfigSO 至 Assets/Resources/U… |
 | [`UIModuleMenuItems`](<Runestone/AesirModules/Editor/UIModuleMenuItems.md>) | UI 模块编辑器菜单项。提供快捷创建 UIRoot 和默认 Canvas 配置资产的入口。 |
 
 </div>

@@ -13,7 +13,7 @@ description: "Runestone.AesirModules.AesirBaseWindowViewController<T> 的 API �
 
 **继承链:** `System.Object` → `UnityEngine.Object` → `UnityEngine.Component` → `UnityEngine.Behaviour` → `UnityEngine.MonoBehaviour` → `Sirenix.OdinInspector.SerializedMonoBehaviour` → `Runestone.AesirArchitecture.AesirMonoBehaviour` → `Runestone.AesirModules.AesirBaseWindow` → `AesirBaseWindowViewController<T>`
 
-**实现接口:** `Runestone.AesirArchitecture.ICanExecuteQuery`，`Runestone.AesirArchitecture.IController`，`Sirenix.Serialization.ISupportsPrefabSerialization`，`Runestone.AesirArchitecture.IContextHolder`，`UnityEngine.ISerializationCallbackReceiver`，`Runestone.AesirArchitecture.ICanGetModel`，`Runestone.AesirArchitecture.ICanGetService`，`Runestone.AesirModules.IUIWindow`，`Runestone.AesirArchitecture.ICanExecuteCommand`
+**实现接口:** `Runestone.AesirArchitecture.ICanExecuteQuery`，`Runestone.AesirArchitecture.IController`，`Sirenix.Serialization.ISupportsPrefabSerialization`，`Runestone.AesirModules.IUIWindow`，`Runestone.AesirArchitecture.IContextHolder`，`UnityEngine.ISerializationCallbackReceiver`，`Runestone.AesirArchitecture.ICanGetModel`，`Runestone.AesirArchitecture.ICanGetService`，`Runestone.AesirArchitecture.ICanExecuteCommand`
 
 **类型参数**
 
@@ -26,11 +26,11 @@ public abstract class AesirBaseWindowViewController<T> : Runestone.AesirModules.
 Runestone.AesirArchitecture.ICanExecuteQuery, 
 Runestone.AesirArchitecture.IController, 
 Sirenix.Serialization.ISupportsPrefabSerialization, 
+Runestone.AesirModules.IUIWindow, 
 Runestone.AesirArchitecture.IContextHolder, 
 UnityEngine.ISerializationCallbackReceiver, 
 Runestone.AesirArchitecture.ICanGetModel, 
 Runestone.AesirArchitecture.ICanGetService, 
-Runestone.AesirModules.IUIWindow, 
 Runestone.AesirArchitecture.ICanExecuteCommand where T : new(), Runestone.AesirArchitecture.AbstractContext<T>
 ```
 

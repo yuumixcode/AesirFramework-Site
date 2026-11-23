@@ -7,7 +7,7 @@ hide:
 
 <div class="aesir-hero" markdown>
 
-<div class="aesir-hero__badge">0.34.1 · Unity / 团结引擎 2022.3+</div>
+<div class="aesir-hero__badge">0.35.0 · Unity / 团结引擎 2022.3+</div>
 
 <h1 class="aesir-hero__title">
 <span class="aesir-hero__word">AesirFramework</span>
@@ -27,7 +27,7 @@ hide:
 <div class="aesir-hero__meta" markdown>
 
 <span>MIT License</span>
-<span>Architecture + Modules 0.34.1</span>
+<span>Architecture + Modules 0.35.0</span>
 <span>800+ EditMode 单元测试</span>
 <span>核心零第三方依赖</span>
 
@@ -107,7 +107,7 @@ AesirFramework 由两个同号发布的包组成。先用 **Aesir Architecture**
 建立在 Architecture 之上的功能模块集合:UI 框架、事件模块、音频模块、场景模块与脚本文档生成工具(需 Odin)。
 
 - UI:四层 Canvas、面板生命周期与 Binder
-- Events:双轨订阅事件系统(过滤器、SO 资产化)
+- Events:Script 订阅事件系统(过滤器、取消传播、SO 资产化、诊断)
 - Audio:SFX 轮询、BGM 淡入淡出与音量持久化
 - Scene:场景加载、卸载与 `SceneAssetWrapper`
 - 可选集成:Odin Inspector、Addressables、Input System

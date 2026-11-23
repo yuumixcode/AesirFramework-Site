@@ -9,7 +9,7 @@ description: "Runestone.AesirModules.IComponentBinder 的 API 文档"
 
     - **种类:** `interface`
     - **命名空间:** `Runestone.AesirModules`
-    - **程序集:** `Runestone.AesirModules.OdinInspector`
+    - **程序集:** `Runestone.AesirModules`
 
 ## 声明
 

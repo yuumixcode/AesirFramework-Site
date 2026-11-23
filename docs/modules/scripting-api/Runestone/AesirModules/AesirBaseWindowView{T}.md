@@ -13,7 +13,7 @@ description: "Runestone.AesirModules.AesirBaseWindowView<T> 的 API 文档"
 
 **继承链:** `System.Object` → `UnityEngine.Object` → `UnityEngine.Component` → `UnityEngine.Behaviour` → `UnityEngine.MonoBehaviour` → `Sirenix.OdinInspector.SerializedMonoBehaviour` → `Runestone.AesirArchitecture.AesirMonoBehaviour` → `Runestone.AesirModules.AesirBaseWindow` → `AesirBaseWindowView<T>`
 
-**实现接口:** `Sirenix.Serialization.ISupportsPrefabSerialization`，`Runestone.AesirArchitecture.IContextHolder`，`UnityEngine.ISerializationCallbackReceiver`，`Runestone.AesirArchitecture.IView`，`Runestone.AesirArchitecture.ICanGetModel`，`Runestone.AesirArchitecture.ICanGetService`，`Runestone.AesirModules.IUIWindow`
+**实现接口:** `Sirenix.Serialization.ISupportsPrefabSerialization`，`Runestone.AesirModules.IUIWindow`，`Runestone.AesirArchitecture.IContextHolder`，`UnityEngine.ISerializationCallbackReceiver`，`Runestone.AesirArchitecture.IView`，`Runestone.AesirArchitecture.ICanGetModel`，`Runestone.AesirArchitecture.ICanGetService`
 
 **类型参数**
 
@@ -24,12 +24,12 @@ description: "Runestone.AesirModules.AesirBaseWindowView<T> 的 API 文档"
 ``` csharp
 public abstract class AesirBaseWindowView<T> : Runestone.AesirModules.AesirBaseWindow, 
 Sirenix.Serialization.ISupportsPrefabSerialization, 
+Runestone.AesirModules.IUIWindow, 
 Runestone.AesirArchitecture.IContextHolder, 
 UnityEngine.ISerializationCallbackReceiver, 
 Runestone.AesirArchitecture.IView, 
 Runestone.AesirArchitecture.ICanGetModel, 
-Runestone.AesirArchitecture.ICanGetService, 
-Runestone.AesirModules.IUIWindow where T : new(), Runestone.AesirArchitecture.AbstractContext<T>
+Runestone.AesirArchitecture.ICanGetService where T : new(), Runestone.AesirArchitecture.AbstractContext<T>
 ```
 
 窗口视图基类（MVP 模式的 View 层，Canvas 根窗口形态）。

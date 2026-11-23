@@ -26,7 +26,7 @@ UnityEngine.ISerializationCallbackReceiver
 
 **备注**
 
-单例 Instance 的解析顺序： RegisterConfigLoader 注册的加载器——注册后 Resources 兜底不再执行， 用于彻底放弃 Resources 的项目（如 Addressables 或代码内构造配置）； Resources 兜底（ResourcePath，编辑器在编辑模式域加载时自动创建该资产， 见编辑器程序集 SceneModuleConfigAssetInitializer）； 内存默认实例——前两级均未命中时以代码默认值创建，仅存在于内存、不持久化。 加载进度上限（progressCap）在每次加载时读取，运行时修改本资产对后续加载立即生效。
+单例 Instance 的解析顺序： RegisterConfigLoader 注册的加载器——注册后 Resources 兜底不再执行， 用于彻底放弃 Resources 的项目（如 Addressables 或代码内构造配置）； Resources 兜底（ResourcePath）；可在 Project 窗口自建资产，或经菜单 Tools/Aesir/Modules/Create Module Config Assets 显式创建（包导入时不写用户工程）； 内存默认实例——前两级均未命中时以代码默认值创建，仅存在于内存、不持久化。 加载进度上限（progressCap）在每次加载时读取，运行时修改本资产对后续加载立即生效。
 
 ## 构造方法
 

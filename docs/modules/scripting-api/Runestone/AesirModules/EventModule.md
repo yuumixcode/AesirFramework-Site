@@ -26,12 +26,10 @@ Sirenix.Serialization.ISupportsPrefabSerialization,
 UnityEngine.ISerializationCallbackReceiver
 ```
 
-事件模块（MonoBehaviour 单例）。 通过 [AesirListener] 特性实现 Attribute 订阅，通过 AddListener{TEventArgs}(object, Action{TEventArgs}) 实现 Script 订阅， 通过 InvokeEvent{TEventArgs} 分发事件。
-支持 4 档优先级排序分发与双轨订阅共存。两种订阅分别存储于独立注册表， 分发时合并并按优先级排序。
+事件模块（MonoBehaviour 单例）。 通过 AddListener{TEventArgs}(object, Action{TEventArgs}) 建立 Script 订阅， 通过 InvokeEvent{TEventArgs} 分发事件。
+订阅方持有 AutoRemoveListenerHandle 精确退订；分发按 4 档优先级稳定执行 （注册表在注册期维护有序：Priority 升序、同档按注册顺序，分发侧零排序）。 分发期可靠性：自动检测并清理已销毁的 Unity 对象订阅者（死引用）； 支持 WithFilter 声明的订阅者过滤器实现精确投递； 可通过 executionMsLimit 开启分发耗时告警；支持 Cancel 取消传播。
 
-分发期可靠性：自动检测并清理已销毁的 Unity 对象订阅者（死引用）； 支持 WithFilter 声明的订阅者过滤器实现精确投递； 可通过 executionMsLimit 开启分发耗时告警。
-
-快照语义与重入安全：每趟分发基于注册表快照迭代——回调内退订/注册只影响后续分发， 不干扰本趟；回调内同步发布事件（重入）使用独立的迭代缓冲区与参数数组， 外层分发不受覆写影响。发布者同理按快照校正：内层分发覆写共享参数实例的 Sender 后，外层遍历会把 Sender 重新校正回本趟发布者， 过滤器判定与订阅者读取均不受内层污染。性能计时（executionMsLimit）仅对顶层分发生效。 排序为 Priority 主键 + 注册序号次键的稳定排序，同优先级按注册顺序执行。
+快照语义：每趟分发基于注册表快照迭代——回调内退订/注册只影响后续分发，不干扰本趟。 重入约定：订阅者回调内同步发布其他参数实例（同型或异型）是安全的， 重入层使用按深度复用的独立迭代缓冲区；同一参数实例在分发期间不得被再次发布 （fail-fast 拒绝并输出错误日志），事件链请使用新实例或经 AesirTimer.NextFrame 延后发布。 性能计时与诊断采集仅对顶层分发生效。
 
 作为 AesirModules 的子物体存在，由 GetOrAddChild{T} 懒加载创建。
 
@@ -111,13 +109,13 @@ public static EventModule Instance { get; }
 
 | 名称 | 描述 |
 | :--- | :--- |
-| [`AddListener(object, AesirEventArgs, Action<AesirEventArgs>)`](#method-addlistener-object-aesireventargs-action-aesireventargs) | 添加 Script 订阅（非泛型版）。通过事件参数实例推断类型，反射适配。 默认优先级 Medium。 |
+| [`AddListener(object, AesirEventArgs, Action<AesirEventArgs>)`](#method-addlistener-object-aesireventargs-action-aesireventargs) | 添加 Script 订阅（非泛型版）。通过事件参数实例推断类型。 默认优先级 Medium。 |
 | [`AddListener(object, AesirEventArgs, SubscriberPriority, Action<AesirEventArgs>)`](#method-addlistener-object-aesireventargs-subscriberpriority-action-aesireventargs) | 添加 Script 订阅（非泛型版），指定优先级。 |
-| [`AddListener(object, Action<TEventArgs>)`](#method-addlistener-object-action-teventargs) | 添加 Script 订阅。通过 Lambda 委托监听指定事件类型，无需 [AesirListener] 特性。 返回自动移除句柄，Dispose 或 using 块结束时自动注销。 默认优先级 Medium。 |
+| [`AddListener(object, Action<TEventArgs>)`](#method-addlistener-object-action-teventargs) | 添加 Script 订阅。通过 Lambda 委托监听指定事件类型，返回自动移除句柄。 Dispose 或 using 块结束时自动注销。 默认优先级 Medium。 |
 | [`AddListener(object, Action<TEventArgs>, SubscriberPriority)`](#method-addlistener-object-action-teventargs-subscriberpriority) | 添加 Script 订阅，指定优先级。返回自动移除句柄。 |
-| [`AddListener(object)`](#method-addlistener-object) | 添加 Attribute 订阅者。反射扫描对象上标有 [AesirListener] 的方法并注册。 通常在 OnEnable 中调用。 |
-| [`InvokeEvent(object, TEventArgs)`](#method-invokeevent-object-teventargs) | 触发事件。合并两个注册表的订阅者，按优先级排序后依次调用。 走非创建式获取：订阅表是实例字段，因此"不存在实例"等价于"不存在任何订阅者"， 分发无事可做——若走 Instance 会在场景卸载等时机重建 DDOL 宿主 （详见 TryGetExisting 的说明）。 |
-| [`RemoveListener(object)`](#method-removelistener-object) | 移除订阅者。从两个注册表中移除该对象的所有绑定（含 Attribute 和 Script）。 通常在 OnDisable 中调用。 |
+| [`InvokeEvent(object, TEventArgs)`](#method-invokeevent-object-teventargs) | 触发事件。取注册表订阅者，按注册期维护的优先级顺序依次调用。 走非创建式获取：订阅表是实例字段，因此"不存在实例"等价于"不存在任何订阅者"， 分发无事可做——若走 Instance 会在场景卸载等时机重建 DDOL 宿主 （详见 TryGetExisting 的说明）。 |
+| [`RemoveListener(object)`](#method-removelistener-object) | 移除指定对象的全部 Script 订阅（O(n) 冷路径，批量逃生舱）。 用于退订方无句柄、且需要一次性清空某对象全部订阅的场景。 持有句柄时请逐个 Dispose；只需退订单个事件时用 RemoveListener{TEventArgs}(object)。 |
+| [`RemoveListener(object)`](#method-removelistener-object) | 移除指定对象的全部 Script 订阅（O(n) 冷路径，批量逃生舱）。 用于退订方无句柄、且需要一次性清空某对象全部订阅的场景。 持有句柄时请逐个 Dispose；只需退订单个事件时用 RemoveListener{TEventArgs}(object)。 |
 
 </div>
 
@@ -197,7 +195,7 @@ public static EventModule Instance { get; }
 
 ### AddListener(object, AesirEventArgs, Action<AesirEventArgs>) {#method-addlistener-object-aesireventargs-action-aesireventargs}
 
-添加 Script 订阅（非泛型版）。通过事件参数实例推断类型，反射适配。 默认优先级 Medium。
+添加 Script 订阅（非泛型版）。通过事件参数实例推断类型。 默认优先级 Medium。
 
 ``` csharp
 public static AutoRemoveListenerHandle AddListener(object subscriber, AesirEventArgs eventArgs, Action<AesirEventArgs> callback)
@@ -258,7 +256,7 @@ public static AutoRemoveListenerHandle AddListener(object subscriber, AesirEvent
 
 ### AddListener(object, Action<TEventArgs>) {#method-addlistener-object-action-teventargs}
 
-添加 Script 订阅。通过 Lambda 委托监听指定事件类型，无需 [AesirListener] 特性。 返回自动移除句柄，Dispose 或 using 块结束时自动注销。 默认优先级 Medium。
+添加 Script 订阅。通过 Lambda 委托监听指定事件类型，返回自动移除句柄。 Dispose 或 using 块结束时自动注销。 默认优先级 Medium。
 
 ``` csharp
 public static AutoRemoveListenerHandle AddListener<TEventArgs>(object subscriber, Action<TEventArgs> callback)
@@ -315,27 +313,9 @@ public static AutoRemoveListenerHandle AddListener<TEventArgs>(object subscriber
 
 </div>
 
-### AddListener(object) {#method-addlistener-object}
-
-添加 Attribute 订阅者。反射扫描对象上标有 [AesirListener] 的方法并注册。 通常在 OnEnable 中调用。
-
-``` csharp
-public static void AddListener(object subscriber)
-```
-
-**参数**
-
-<div class="api-params-table" markdown="1">
-
-| 名称 | 类型 | 说明 |
-| :--- | :--- | :--- |
-| `subscriber` | `object` | — |
-
-</div>
-
 ### InvokeEvent(object, TEventArgs) {#method-invokeevent-object-teventargs}
 
-触发事件。合并两个注册表的订阅者，按优先级排序后依次调用。
+触发事件。取注册表订阅者，按注册期维护的优先级顺序依次调用。
 走非创建式获取：订阅表是实例字段，因此"不存在实例"等价于"不存在任何订阅者"， 分发无事可做——若走 Instance 会在场景卸载等时机重建 DDOL 宿主 （详见 TryGetExisting 的说明）。
 
 ``` csharp
@@ -355,10 +335,30 @@ public static void InvokeEvent<TEventArgs>(object sender, TEventArgs eventArgs)
 
 ### RemoveListener(object) {#method-removelistener-object}
 
-移除订阅者。从两个注册表中移除该对象的所有绑定（含 Attribute 和 Script）。 通常在 OnDisable 中调用。
+移除指定对象的全部 Script 订阅（O(n) 冷路径，批量逃生舱）。
+用于退订方无句柄、且需要一次性清空某对象全部订阅的场景。 持有句柄时请逐个 Dispose；只需退订单个事件时用 RemoveListener{TEventArgs}(object)。
 
 ``` csharp
 public static void RemoveListener(object subscriber)
+```
+
+**参数**
+
+<div class="api-params-table" markdown="1">
+
+| 名称 | 类型 | 说明 |
+| :--- | :--- | :--- |
+| `subscriber` | `object` | — |
+
+</div>
+
+### RemoveListener(object) {#method-removelistener-object}
+
+移除指定对象的全部 Script 订阅（O(n) 冷路径，批量逃生舱）。
+用于退订方无句柄、且需要一次性清空某对象全部订阅的场景。 持有句柄时请逐个 Dispose；只需退订单个事件时用 RemoveListener{TEventArgs}(object)。
+
+``` csharp
+public static void RemoveListener<TEventArgs>(object subscriber)
 ```
 
 **参数**

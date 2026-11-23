@@ -109,16 +109,18 @@ public static readonly AesirGetStartedService.AesirKnownPackage[] KnownPackages;
 | [`ConfirmAndImportUpmSample(AesirGetStartedService.AesirSampleInfo, ref string)`](#method-confirmandimportupmsample-aesirgetstartedservice-aesirsampleinfo-ref-string) | 弹出 Unity 确认框（含示例介绍与导入后位置，可取消），确认后经 Unity Package Manager 的 Sample API 把示例导入到 Assets/Samples/<包显示名>/<版本>/<示例显示名>/； 取消返回 Cancelled，不动文件系统。 |
 | [`ScanPackages()`](#method-scanpackages) | 扫描本机安装的 Aesir 包并解析示例。包按 Id 字母序返回 （cn.runestone.aesir.architecture → cn.runestone.aesir.modules，恰为教学顺序）； 同名包按「Assets 副本 → 嵌入式 → PackageCache」优先级取一。 |
 | [`GroupSamples(AesirGetStartedService.AesirPackageInfo)`](#method-groupsamples-aesirgetstartedservice-aesirpackageinfo) | 按教学分组归置包内示例（组内保持 package.json 声明顺序；组间按 GetGroupOrder 排序，同序号保持首现顺序——插入排序保证稳定性）。 |
-| [`OpenSampleScene(AesirGetStartedService.AesirSampleInfo)`](#method-opensamplescene-aesirgetstartedservice-aesirsampleinfo) | 打开示例场景：先保存当前打开的场景一次（无未保存修改时为空操作），再切换到示例场景。 当前场景从未保存过（无路径）时由 Unity Save 面板兜底，用户在面板中取消保存则中止切换 （避免丢失未保存的改动）；无场景 / 未导入示例退化为 PingSample 定位。 |
+| [`OpenSampleScene(AesirGetStartedService.AesirSampleInfo)`](#method-opensamplescene-aesirgetstartedservice-aesirsampleinfo) | 打开示例场景：先保存当前打开的场景一次（无未保存修改时为空操作），再切换到示例场景。 有资产路径的场景静默落盘——示例导航是高频浏览动作，不为正常场景弹确认框；无路径的临时场景 （新建未保存 / 崩溃恢复出的 Temp/__Backupscenes 场景）无法静默保存 （SaveOpenScenes 会让 Unity 弹出另存为面板强制命名）， 故跳过它们并改用 Unity 打开场景的标准询问（不保存 / 取消 / 保存，取消则中止切换）。 无场景 / 未导入示例退化为 PingSample 定位。 |
 | [`PingSample(AesirGetStartedService.AesirSampleInfo)`](#method-pingsample-aesirgetstartedservice-aesirsampleinfo) | 在 Project 窗口选中并 Ping 示例根目录文件夹（未导入时打开 Package Manager）。 |
+| [`TryGetExtraSampleAction(AesirGetStartedService.AesirSampleInfo, ref AesirGetStartedService.AesirSampleAction)`](#method-trygetextrasampleaction-aesirgetstartedservice-aesirsampleinfo-ref-aesirgetstartedservice-aesirsampleaction) | 取示例注册的自定义动作（两版 Getting Started 的右侧按钮共用）。 |
 | [`BuildImportConfirmMessage(AesirGetStartedService.AesirSampleInfo)`](#method-buildimportconfirmmessage-aesirgetstartedservice-aesirsampleinfo) | 导入确认框正文：包名 + 示例名 + 示例介绍 + 导入后位置。 |
 | [`BuildNotImportedToastMessage(AesirGetStartedService.AesirSampleInfo)`](#method-buildnotimportedtoastmessage-aesirgetstartedservice-aesirsampleinfo) | 未导入示例整卡点击的 Toast 文本（引导经右侧按钮导入——导入动作在窗口内完成，不必去 Package Manager）。 |
-| [`BuildOpenSceneToastMessage(AesirGetStartedService.AesirSampleInfo)`](#method-buildopenscenetoastmessage-aesirgetstartedservice-aesirsampleinfo) | 打开场景动作的 Toast 提示文本（告知示例场景已打开、切换前的场景已保存）。 |
+| [`BuildOpenSceneToastMessage(AesirGetStartedService.AesirSampleInfo)`](#method-buildopenscenetoastmessage-aesirgetstartedservice-aesirsampleinfo) | 打开场景动作的 Toast 提示文本（告知示例场景已打开）。 |
 | [`BuildPingToastMessage(AesirGetStartedService.AesirSampleInfo)`](#method-buildpingtoastmessage-aesirgetstartedservice-aesirsampleinfo) | 定位动作的 Toast 提示文本（告知用户已在 Project 窗口选中示例文件夹）。 |
 | [`GetSampleBadge(AesirGetStartedService.AesirSampleInfo)`](#method-getsamplebadge-aesirgetstartedservice-aesirsampleinfo) | 档位徽章文本（无档位返回 null）：名称中的 快捷 / 标准 / 严格，或目录序号（01 基础、其余进阶）。 |
-| [`GetSampleGroup(AesirGetStartedService.AesirSampleInfo)`](#method-getsamplegroup-aesirgetstartedservice-aesirsampleinfo) | 示例分组标题（渐进式教学顺序：MVC → MVP → 功能演示 → 实战 → 各模块）。 |
+| [`GetSampleGroup(AesirGetStartedService.AesirSampleInfo)`](#method-getsamplegroup-aesirgetstartedservice-aesirsampleinfo) | 示例分组标题（渐进式教学顺序：MVC → MVP → 功能演示 → 各模块）。 |
 | [`GetUpmSampleImportPath(AesirGetStartedService.AesirSampleInfo)`](#method-getupmsampleimportpath-aesirgetstartedservice-aesirsampleinfo) | UPM / 嵌入式安装的示例导入后位置（项目相对路径，与 Package Manager 实际落地位置一致）。 |
 | [`OpenPackageManager()`](#method-openpackagemanager) | 打开 Package Manager（UPM / 嵌入式安装的示例经其 Samples 标签页导入）。 |
+| [`RegisterExtraSampleAction(string, string, Action)`](#method-registerextrasampleaction-string-string-action) | 注册示例的自定义动作。key 取 package.json samples 清单里的相对目录（如 RuntimeInitializeLoadType）。 由示例自己的编辑器程序集在 [InitializeOnLoadMethod] 中注册——核心编辑器程序集不引用示例程序集。 |
 
 </div>
 
@@ -215,7 +217,7 @@ public static List<AesirGetStartedService.SampleGroup> GroupSamples(AesirGetStar
 ### OpenSampleScene(AesirGetStartedService.AesirSampleInfo) {#method-opensamplescene-aesirgetstartedservice-aesirsampleinfo}
 
 打开示例场景：先保存当前打开的场景一次（无未保存修改时为空操作），再切换到示例场景。
-当前场景从未保存过（无路径）时由 Unity Save 面板兜底，用户在面板中取消保存则中止切换 （避免丢失未保存的改动）；无场景 / 未导入示例退化为 PingSample 定位。
+有资产路径的场景静默落盘——示例导航是高频浏览动作，不为正常场景弹确认框；无路径的临时场景 （新建未保存 / 崩溃恢复出的 Temp/__Backupscenes 场景）无法静默保存 （SaveOpenScenes 会让 Unity 弹出另存为面板强制命名）， 故跳过它们并改用 Unity 打开场景的标准询问（不保存 / 取消 / 保存，取消则中止切换）。 无场景 / 未导入示例退化为 PingSample 定位。
 
 ``` csharp
 public static bool OpenSampleScene(AesirGetStartedService.AesirSampleInfo sample)
@@ -266,6 +268,35 @@ public static bool PingSample(AesirGetStartedService.AesirSampleInfo sample)
 | 类型 | 说明 |
 | :--- | :--- |
 | `bool` | 是否定位成功（资产缺失或未导入时为 false）。 |
+
+</div>
+
+### TryGetExtraSampleAction(AesirGetStartedService.AesirSampleInfo, ref AesirGetStartedService.AesirSampleAction) {#method-trygetextrasampleaction-aesirgetstartedservice-aesirsampleinfo-ref-aesirgetstartedservice-aesirsampleaction}
+
+取示例注册的自定义动作（两版 Getting Started 的右侧按钮共用）。
+
+``` csharp
+public static bool TryGetExtraSampleAction(AesirGetStartedService.AesirSampleInfo sample, out ref AesirGetStartedService.AesirSampleAction action)
+```
+
+**参数**
+
+<div class="api-params-table" markdown="1">
+
+| 名称 | 类型 | 说明 |
+| :--- | :--- | :--- |
+| `sample` | `AesirGetStartedService.AesirSampleInfo` | — |
+| `action` | `ref AesirGetStartedService.AesirSampleAction` | — |
+
+</div>
+
+**返回值**
+
+<div class="api-returns-table" markdown="1">
+
+| 类型 | 说明 |
+| :--- | :--- |
+| `bool` | — |
 
 </div>
 
@@ -327,7 +358,7 @@ public static string BuildNotImportedToastMessage(AesirGetStartedService.AesirSa
 
 ### BuildOpenSceneToastMessage(AesirGetStartedService.AesirSampleInfo) {#method-buildopenscenetoastmessage-aesirgetstartedservice-aesirsampleinfo}
 
-打开场景动作的 Toast 提示文本（告知示例场景已打开、切换前的场景已保存）。
+打开场景动作的 Toast 提示文本（告知示例场景已打开）。
 
 ``` csharp
 public static string BuildOpenSceneToastMessage(AesirGetStartedService.AesirSampleInfo sample)
@@ -411,7 +442,7 @@ public static string GetSampleBadge(AesirGetStartedService.AesirSampleInfo sampl
 
 ### GetSampleGroup(AesirGetStartedService.AesirSampleInfo) {#method-getsamplegroup-aesirgetstartedservice-aesirsampleinfo}
 
-示例分组标题（渐进式教学顺序：MVC → MVP → 功能演示 → 实战 → 各模块）。
+示例分组标题（渐进式教学顺序：MVC → MVP → 功能演示 → 各模块）。
 
 **备注**
 
@@ -476,6 +507,26 @@ public static string GetUpmSampleImportPath(AesirGetStartedService.AesirSampleIn
 ``` csharp
 public static void OpenPackageManager()
 ```
+
+### RegisterExtraSampleAction(string, string, Action) {#method-registerextrasampleaction-string-string-action}
+
+注册示例的自定义动作。key 取 package.json samples 清单里的相对目录（如 RuntimeInitializeLoadType）。 由示例自己的编辑器程序集在 [InitializeOnLoadMethod] 中注册——核心编辑器程序集不引用示例程序集。
+
+``` csharp
+public static void RegisterExtraSampleAction(string relativeDir, string label, Action invoke)
+```
+
+**参数**
+
+<div class="api-params-table" markdown="1">
+
+| 名称 | 类型 | 说明 |
+| :--- | :--- | :--- |
+| `relativeDir` | `string` | — |
+| `label` | `string` | — |
+| `invoke` | `Action` | — |
+
+</div>
 
 ## Additional Notes
 

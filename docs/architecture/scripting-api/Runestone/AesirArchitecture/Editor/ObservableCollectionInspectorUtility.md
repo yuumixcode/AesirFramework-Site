@@ -9,7 +9,7 @@ description: "Runestone.AesirArchitecture.Editor.ObservableCollectionInspectorUt
 
     - **种类:** `static class`
     - **命名空间:** `Runestone.AesirArchitecture.Editor`
-    - **程序集:** `Runestone.AesirArchitecture.Editor.OdinInspector`
+    - **程序集:** `Runestone.AesirArchitecture.Editor`
 
 **继承链:** `System.Object` → `ObservableCollectionInspectorUtility`
 

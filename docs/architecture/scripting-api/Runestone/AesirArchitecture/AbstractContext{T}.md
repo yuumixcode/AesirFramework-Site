@@ -68,7 +68,7 @@ public bool Initialized { get; private set; }
 采用懒加载单例模式：首次访问时通过 new T() 创建实例并调用 Initialize， 初始化成功后才写入静态字段 _instance。后续访问直接返回缓存实例，不再重复初始化。
 初始化失败：单例不会被缓存，后续每次访问都会重新创建并重新初始化， 根因异常每次抛出（而非只抛一次后拿到 Initialized 为 false 的坏上下文）。 已初始化到一半的模块不做回滚 Dispose，随被丢弃的实例交由 GC 回收——初始化失败属启动期编程错误， 应修复根因而非优雅降级。
 
-重入约定：Configure 及各模块的初始化方法中禁止访问 Instance， 否则会因单例尚未发布而递归创建第二个上下文实例。
+重入约定：Configure 及各模块的初始化方法中禁止访问 Instance。 单例在 Initialize 完成后才发布，初始化期间访问 Instance 会再次触发 创建 → 初始化 → 访问的无限递归，最终栈溢出（StackOverflowException 不可捕获、直接崩溃进程）。 为此 Instance 设重入守卫：初始化期间检测到重入即抛含修复提示的 InvalidOperationException，把不可诊断的栈溢出转为可操作的快速失败。
 
 该属性返回具体上下文类型 T， 访问 IContext 接口成员时自动向上转型，无需强转。
 

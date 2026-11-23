@@ -19,10 +19,8 @@ description: "Runestone.AesirArchitecture.Editor.AesirGetStartedWindow 的 API �
 public class AesirGetStartedWindow : UnityEditor.EditorWindow
 ```
 
-Aesir Getting Started 窗口（IMGUI 兜底版）— 框架示例导航：列出本机安装的 Aesir 包及其示例， 按教学分组展示，一键打开示例场景或定位示例目录。
-安装了 Odin Inspector 时，菜单入口经 OdinWindowOpener 路由到 Odin 版窗口 （AesirGetStartedWindowOdin：页面栈导航、示例卡片与滑动动效）；未安装时本窗口为菜单落点。 数据层两版共用 AesirGetStartedService，本类只做展示与动作接线。
-
-扫描结果（包 + 分组视图模型）在 OnEnable / 手动刷新时重建，OnGUI 期间零磁盘 IO、零 LINQ。
+Aesir Getting Started 窗口（UI Toolkit 版）— 框架示例导航：列出本机安装的 Aesir 包及其示例， 按教学分组展示，一键打开示例场景或定位示例目录。
+安装 Odin Inspector 且样式开关 UseOdin 为 true 时， 菜单经 OdinWindowOpener 路由到 Odin 版窗口（AesirGetStartedWindowOdin）； 否则打开本窗口。外观由 AesirGetStarted.uss 统一控制，复刻 Odin 深色卡片风格。
 
 ## 构造方法
 
@@ -48,7 +46,7 @@ public AesirGetStartedWindow()
 
 | 名称 | 描述 |
 | :--- | :--- |
-| [`OdinWindowOpener`](#property-odinwindowopener) | Odin 版窗口的打开委托（由 Odin 程序集经 [InitializeOnLoadMethod] 注册； 未安装 Odin Inspector 时为 null，菜单打开本 IMGUI 兜底窗口）。 |
+| [`OdinWindowOpener`](#property-odinwindowopener) | Odin 版窗口的打开委托（由 Odin 程序集经 [InitializeOnLoadMethod] 注册； 未安装 Odin Inspector 或样式开关关闭时为 null，菜单打开本 UI Toolkit 窗口）。 |
 
 </div>
 
@@ -84,7 +82,7 @@ public AesirGetStartedWindow()
 
 ### OdinWindowOpener {#property-odinwindowopener}
 
-Odin 版窗口的打开委托（由 Odin 程序集经 [InitializeOnLoadMethod] 注册； 未安装 Odin Inspector 时为 null，菜单打开本 IMGUI 兜底窗口）。
+Odin 版窗口的打开委托（由 Odin 程序集经 [InitializeOnLoadMethod] 注册； 未安装 Odin Inspector 或样式开关关闭时为 null，菜单打开本 UI Toolkit 窗口）。
 
 ``` csharp
 public static Action OdinWindowOpener { get; private set; }
