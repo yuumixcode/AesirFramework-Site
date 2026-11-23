@@ -1,8 +1,11 @@
 # AesirFramework-Site
 
+> **⚠️ 本仓库已弃用(2026-11-23)**:文档站已并入框架主仓 [yuumixcode/AesirFramework](https://github.com/yuumixcode/AesirFramework)(内容在主仓根 `docs/` + `zensical.toml`),新线上地址 **https://yuumixcode.github.io/AesirFramework/**。
+> 本仓仅保留**全路径跳转壳**(`redirect/`,旧深链自动跳新站对应页)与站点历史留档,不再更新内容。站点工程约定见主仓 `tools/docs-site/README.md`;跳转页由 `tools/make-redirects.py` 从最后一次站点构建产物生成。
+
 **AesirFramework 的产品综合站点** —— 产品介绍、上手路径、使用文档与 Scripting API 参考。
 
-- 线上地址:https://yuumixcode.github.io/AesirFramework-Site/
+- 线上地址(跳转壳):https://yuumixcode.github.io/AesirFramework-Site/ → 新址 https://yuumixcode.github.io/AesirFramework/
 - 框架源码:https://github.com/yuumixcode/AesirFramework
 - 开发者内部笔记:`Aesir-Notebook`(私有,不对外)
 
